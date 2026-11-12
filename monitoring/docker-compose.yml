@@ -1,0 +1,125 @@
+name: lrt-monitoring
+
+services:
+  prometheus:
+    image: prom/prometheus:v2.54.1
+    container_name: lrt-prometheus
+    user: "0"
+    restart: unless-stopped
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=30d
+      - --web.enable-lifecycle
+    ports:
+      - "127.0.0.1:9091:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro,z
+      - ./prometheus/alerts.yml:/etc/prometheus/alerts.yml:ro,z
+      - ./prometheus/targets:/etc/prometheus/targets:ro,z
+      - prometheus-data:/prometheus
+
+  alertmanager:
+    image: prom/alertmanager:v0.27.0
+    container_name: lrt-alertmanager
+    user: "0"
+    restart: unless-stopped
+    command:
+      - --config.file=/etc/alertmanager/alertmanager.yml
+      - --storage.path=/alertmanager
+    ports:
+      - "127.0.0.1:9093:9093"
+    volumes:
+      - ./alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro,z
+      - alertmanager-data:/alertmanager
+
+  grafana:
+    image: grafana/grafana:11.2.2
+    container_name: lrt-grafana
+    restart: unless-stopped
+    ports:
+      - "3001:3000"
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:?Isi GRAFANA_ADMIN_PASSWORD di file .env}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+      GF_USERS_ALLOW_ORG_CREATE: "false"
+      GF_SECURITY_DISABLE_GRAVATAR: "true"
+      GF_ANALYTICS_REPORTING_ENABLED: "false"
+      GF_ANALYTICS_CHECK_FOR_UPDATES: "false"
+      GF_SERVER_ROOT_URL: ${GRAFANA_URL:-http://192.168.38.11:3001}
+      GF_SECURITY_ALLOW_EMBEDDING: "true"
+      GF_AUTH_ANONYMOUS_ENABLED: ${GRAFANA_ANONYMOUS:-false}
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
+      GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH: /var/lib/grafana/dashboards/pantauan-server.json
+      TZ: Asia/Jakarta
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafana-data:/var/lib/grafana
+
+  loki:
+    image: grafana/loki:2.9.8
+    container_name: lrt-loki
+    restart: unless-stopped
+    command:
+      - -config.file=/etc/loki/loki-config.yml
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./loki/loki-config.yml:/etc/loki/loki-config.yml:ro
+      - loki-data:/loki
+    user: "0"
+
+  blackbox-exporter:
+    image: prom/blackbox-exporter:v0.25.0
+    container_name: lrt-blackbox
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:9115:9115"
+    volumes:
+      - ./blackbox/blackbox.yml:/etc/blackbox_exporter/config.yml:ro
+    command:
+      - --config.file=/etc/blackbox_exporter/config.yml
+
+  node-exporter:
+    image: prom/node-exporter:v1.8.2
+    container_name: lrt-node-exporter
+    restart: unless-stopped
+    profiles: ["local-agent"]
+    pid: host
+    command:
+      - --path.rootfs=/host
+      - --collector.systemd
+      - --collector.processes
+    volumes:
+      - /:/host:ro,rslave
+    ports:
+      - "9100:9100"
+
+  process-exporter:
+    image: ncabatoff/process-exporter:0.8.7
+    container_name: lrt-process-exporter
+    restart: unless-stopped
+    profiles: ["local-agent"]
+    pid: host
+    command:
+      - --procfs=/host/proc
+      - --config.path=/config.yml
+    volumes:
+      - /proc:/host/proc:ro
+      - ./process-exporter/config.yml:/config.yml:ro
+    ports:
+      - "9256:9256"
+
+volumes:
+  prometheus-data:
+  alertmanager-data:
+  grafana-data:
+  loki-data:
+
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: 172.26.1.0/24

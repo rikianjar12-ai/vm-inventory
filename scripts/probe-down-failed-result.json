@@ -1,0 +1,1206 @@
+{
+  "generated_at": "2026-11-07T03:18:44.879Z",
+  "note": "Probe TCP :9100 + scrape /metrics dari workstation. Angka Grafana (48 UP / 32 DOWN, 146 service gagal) dari Prometheus di 192.168.38.11 bisa berbeda karena routing/firewall.",
+  "grafana_snapshot": {
+    "up": 48,
+    "down": 32,
+    "service_gagal": 146
+  },
+  "probed_total": 80,
+  "up_from_here": 30,
+  "down_from_here": 50,
+  "down_by_lokasi": {
+    "DC": 11,
+    "DCC Vmware": 11,
+    "DCC Nutanix": 2,
+    "DCD": 11,
+    "LRT": 15
+  },
+  "down_list": [
+    {
+      "server_id": "vm-app-db-pso-lrt-dc-dev-172.16.26.96",
+      "application": "app-db-pso",
+      "lokasi": "DC",
+      "target": "172.16.26.96:9100"
+    },
+    {
+      "server_id": "vm-app-new-web-lrt-prd-dc-192.168.18.6",
+      "application": "app-new-web",
+      "lokasi": "DC",
+      "target": "192.168.18.6:9100"
+    },
+    {
+      "server_id": "vm-app-pso-lrt-prd-dc-172.16.27.60",
+      "application": "app-pso",
+      "lokasi": "DC",
+      "target": "172.16.27.60:9100"
+    },
+    {
+      "server_id": "vm-app-somi-be-lrt-prd-dc-192.168.18.4",
+      "application": "app-somi-be",
+      "lokasi": "DC",
+      "target": "192.168.18.4:9100"
+    },
+    {
+      "server_id": "vm-app-somi-fe-lrt-prd-dc-192.168.18.3",
+      "application": "app-somi-fe",
+      "lokasi": "DC",
+      "target": "192.168.18.3:9100"
+    },
+    {
+      "server_id": "vm-app-virtualtour-lrt-prd-dc-172.16.27.74",
+      "application": "app-virtualtour",
+      "lokasi": "DC",
+      "target": "172.16.27.74:9100"
+    },
+    {
+      "server_id": "vm-app-web-lrt01-dev-dc-172.16.24.49",
+      "application": "app-web-lrt01",
+      "lokasi": "DC",
+      "target": "172.16.24.49:9100"
+    },
+    {
+      "server_id": "vm-db-new-web-lrt-prd-dc-192.168.18.7",
+      "application": "db-new-web",
+      "lokasi": "DC",
+      "target": "192.168.18.7:9100"
+    },
+    {
+      "server_id": "vm-db-pso-lrt-prd-dc-172.16.27.61",
+      "application": "db-pso",
+      "lokasi": "DC",
+      "target": "172.16.27.61:9100"
+    },
+    {
+      "server_id": "vm-db-somi-lrt-prd-dc-192.168.18.5",
+      "application": "db-somi",
+      "lokasi": "DC",
+      "target": "192.168.18.5:9100"
+    },
+    {
+      "server_id": "vm-db-web-lrt01-dev-dc-172.16.24.51",
+      "application": "db-web-lrt01",
+      "lokasi": "DC",
+      "target": "172.16.24.51:9100"
+    },
+    {
+      "server_id": "vm-app-grafana-itdns-dev-192.168.38.11",
+      "application": "db-vms-it",
+      "lokasi": "DCC Nutanix",
+      "target": "192.168.38.11:9100"
+    },
+    {
+      "server_id": "vm-app-grafana-itdns-prd-192.168.38.10",
+      "application": "app-vms-it",
+      "lokasi": "DCC Nutanix",
+      "target": "192.168.38.10:9100"
+    },
+    {
+      "server_id": "vm-app-backup-stasiun-lrt-prd-dcc-192.168.38.19",
+      "application": "app-backup-stasiun",
+      "lokasi": "DCC Vmware",
+      "target": "192.168.38.19:9100"
+    },
+    {
+      "server_id": "vm-app-cpm-qr-gate-lrt-prd-dcc-192.168.38.17",
+      "application": "app-cpm-qr-gate",
+      "lokasi": "DCC Vmware",
+      "target": "192.168.38.17:9100"
+    },
+    {
+      "server_id": "vm-app-monitoring-server-lrt-prd-dcc-192.168.38.1",
+      "application": "app-monitoring-server",
+      "lokasi": "DCC Vmware",
+      "target": "192.168.38.1:9100"
+    },
+    {
+      "server_id": "vm-app-ntp-lrt-prd-dcc-192.168.38.20",
+      "application": "app-ntp",
+      "lokasi": "DCC Vmware",
+      "target": "192.168.38.20:9100"
+    },
+    {
+      "server_id": "vm-app-qrtp-topup-lrt-prd-dcc-192.168.38.15",
+      "application": "app-qrtp-topup",
+      "lokasi": "DCC Vmware",
+      "target": "192.168.38.15:9100"
+    },
+    {
+      "server_id": "vm-app-syncronize-sotc-lrt-prd-dcc-192.168.38.14",
+      "application": "app-syncronize-sotc",
+      "lokasi": "DCC Vmware",
+      "target": "192.168.38.14:9100"
+    },
+    {
+      "server_id": "vm-app-web-sotc-lrt-prd-dcc-192.168.38.12",
+      "application": "app-web-sotc",
+      "lokasi": "DCC Vmware",
+      "target": "192.168.38.12:9100"
+    },
+    {
+      "server_id": "vm-app-wms-lrt-dev-dcc-192.168.38.21",
+      "application": "app-wms",
+      "lokasi": "DCC Vmware",
+      "target": "192.168.38.21:9100"
+    },
+    {
+      "server_id": "vm-db-cpm-qr-gate-lrt-prd-dcc-192.168.38.18",
+      "application": "db-cpm-qr-gate",
+      "lokasi": "DCC Vmware",
+      "target": "192.168.38.18:9100"
+    },
+    {
+      "server_id": "vm-db-qrtp-topup-lrt-prd-dcc-192.168.38.16",
+      "application": "db-qrtp-topup",
+      "lokasi": "DCC Vmware",
+      "target": "192.168.38.16:9100"
+    },
+    {
+      "server_id": "vm-db-sotc-lrt-prd-dcc-192.168.38.13",
+      "application": "db-sotc",
+      "lokasi": "DCC Vmware",
+      "target": "192.168.38.13:9100"
+    },
+    {
+      "server_id": "vm-app-daily-check-lrt-prd-dcd-192.168.64.22",
+      "application": "app-daily-check",
+      "lokasi": "DCD",
+      "target": "192.168.64.22:9100"
+    },
+    {
+      "server_id": "vm-app-graylog-lrt-dev-dcd-192.168.64.17",
+      "application": "app-graylog",
+      "lokasi": "DCD",
+      "target": "192.168.64.17:9100"
+    },
+    {
+      "server_id": "vm-app-immax-01-lrt-prd-dcd-192.168.64.13",
+      "application": "app-immax-01",
+      "lokasi": "DCD",
+      "target": "192.168.64.13:9100"
+    },
+    {
+      "server_id": "vm-app-immax-02-lrt-prd-dcd-192.168.64.14",
+      "application": "app-immax-02",
+      "lokasi": "DCD",
+      "target": "192.168.64.14:9100"
+    },
+    {
+      "server_id": "vm-app-new-pso-lrt-prd-dcd-192.168.64.18",
+      "application": "app-new-pso",
+      "lokasi": "DCD",
+      "target": "192.168.64.18:9100"
+    },
+    {
+      "server_id": "vm-app-survey-lrt-prd-dcd-192.168.64.6",
+      "application": "app-survey",
+      "lokasi": "DCD",
+      "target": "192.168.64.6:9100"
+    },
+    {
+      "server_id": "vm-db-immax-lrt-prd-dcd-192.168.64.15",
+      "application": "db-immax",
+      "lokasi": "DCD",
+      "target": "192.168.64.15:9100"
+    },
+    {
+      "server_id": "vm-db-new-pso-lrt-prd-dcd-192.168.64.19",
+      "application": "db-new-pso",
+      "lokasi": "DCD",
+      "target": "192.168.64.19:9100"
+    },
+    {
+      "server_id": "vm-db-penjadwalan-kereta-lrt-dev-dcd-192.168.64.10",
+      "application": "db-penjadwalan-kereta",
+      "lokasi": "DCD",
+      "target": "192.168.64.10:9100"
+    },
+    {
+      "server_id": "vm-db-penjadwalan-kereta-lrt-prd-dcd-192.168.64.11",
+      "application": "db-penjadwalan-kereta",
+      "lokasi": "DCD",
+      "target": "192.168.64.11:9100"
+    },
+    {
+      "server_id": "vm-db-portal-layanan-lrt-prd-dcd-192.168.64.27",
+      "application": "db-portal-layanan",
+      "lokasi": "DCD",
+      "target": "192.168.64.27:9100"
+    },
+    {
+      "server_id": "101 (vm-monit-cctv-lrt)",
+      "application": "monit-cctv-lrt",
+      "lokasi": "LRT",
+      "target": "10.45.21.246:9100"
+    },
+    {
+      "server_id": "102 (VM-LRT-Bindplane-Management)",
+      "application": "Bindplane-Management",
+      "lokasi": "LRT",
+      "target": "10.45.100.20:9100"
+    },
+    {
+      "server_id": "103 (server-zabix)",
+      "application": "server-zabix",
+      "lokasi": "LRT",
+      "target": "10.45.100.13:9100"
+    },
+    {
+      "server_id": "104 (vm-daily-backup-db)",
+      "application": "daily-backup-db",
+      "lokasi": "LRT",
+      "target": "10.45.100.19:9100"
+    },
+    {
+      "server_id": "PVE01-CT-102-LRT_REGISTRY",
+      "application": "LRT_REGISTRY",
+      "lokasi": "LRT",
+      "target": "10.45.100.101:9100"
+    },
+    {
+      "server_id": "PVE01-VM-101-LRT_CICD",
+      "application": "LRT_CICD",
+      "lokasi": "LRT",
+      "target": "10.45.100.142:9100"
+    },
+    {
+      "server_id": "PVE02-VM-401-LRT_DEV",
+      "application": "LRT_DEV",
+      "lokasi": "LRT",
+      "target": "10.45.100.111:9100"
+    },
+    {
+      "server_id": "PVE03-VM-201-LRT_GATEWAY_PROD",
+      "application": "LRT_GATEWAY_PROD",
+      "lokasi": "LRT",
+      "target": "10.45.100.121:9100"
+    },
+    {
+      "server_id": "PVE03-VM-202-LRT_NATS_PROD",
+      "application": "LRT_NATS_PROD",
+      "lokasi": "LRT",
+      "target": "10.45.100.123:9100"
+    },
+    {
+      "server_id": "PVE03-VM-203-LRT_OBSERVABILITY_PROD",
+      "application": "LRT_OBSERVABILITY_PROD",
+      "lokasi": "LRT",
+      "target": "10.45.100.124:9100"
+    },
+    {
+      "server_id": "PVE04-VM-104-LRT_IAM_PROD",
+      "application": "LRT_IAM_PROD",
+      "lokasi": "LRT",
+      "target": "10.45.100.143:9100"
+    },
+    {
+      "server_id": "PVE04-VM-105-LRT_SOMI_PROD",
+      "application": "LRT_SOMI_PROD",
+      "lokasi": "LRT",
+      "target": "10.45.100.147:9100"
+    },
+    {
+      "server_id": "PVE04-VM-106-LRT_ATS_PIPELINE_PROD",
+      "application": "LRT_ATS_PIPELINE_PROD",
+      "lokasi": "LRT",
+      "target": "10.45.100.132:9100"
+    },
+    {
+      "server_id": "PVE04-VM-107-LRT_UPIS_PROD",
+      "application": "LRT_UPIS_PROD",
+      "lokasi": "LRT",
+      "target": "10.45.100.133:9100"
+    },
+    {
+      "server_id": "PVE04-VM-108-LRT_SIGNANE_PROD",
+      "application": "LRT_SIGNANE_PROD",
+      "lokasi": "LRT",
+      "target": "10.45.100.134:9100"
+    }
+  ],
+  "failed_service_count_from_reachable": 85,
+  "failed_by_unit": [
+    {
+      "unit": "dailyaidecheck.service",
+      "count": 14
+    },
+    {
+      "unit": "systemd-sysctl.service",
+      "count": 14
+    },
+    {
+      "unit": "postfix@-.service",
+      "count": 4
+    },
+    {
+      "unit": "systemd-networkd-wait-online.service",
+      "count": 4
+    },
+    {
+      "unit": "logrotate.service",
+      "count": 2
+    },
+    {
+      "unit": "postgresql@14-main.service",
+      "count": 2
+    },
+    {
+      "unit": "nginx.service",
+      "count": 2
+    },
+    {
+      "unit": "apparmor.service",
+      "count": 1
+    },
+    {
+      "unit": "apport.service",
+      "count": 1
+    },
+    {
+      "unit": "console-setup.service",
+      "count": 1
+    },
+    {
+      "unit": "keyboard-setup.service",
+      "count": 1
+    },
+    {
+      "unit": "run-r025664aba634405d8aadf39a905e22ff.service",
+      "count": 1
+    },
+    {
+      "unit": "run-r573389be8f704ecf968f081a73e2c258.service",
+      "count": 1
+    },
+    {
+      "unit": "run-ra8abba4dafae44239e13e5459e156f6a.service",
+      "count": 1
+    },
+    {
+      "unit": "run-rb1670d29807548538c84ea88c77b0d8a.service",
+      "count": 1
+    },
+    {
+      "unit": "run-rc5965ed7135d43d6b24fe5c3298738a9.service",
+      "count": 1
+    },
+    {
+      "unit": "run-rc838fce8676b410d8f47a7dbab3a74ef.service",
+      "count": 1
+    },
+    {
+      "unit": "udisks2.service",
+      "count": 1
+    },
+    {
+      "unit": "ufw.service",
+      "count": 1
+    },
+    {
+      "unit": "run-r8ddefe7b8bed4c7ab79336c7659829ce.service",
+      "count": 1
+    },
+    {
+      "unit": "run-r319efaf3692b46f6a6c1af936b633faa.service",
+      "count": 1
+    },
+    {
+      "unit": "run-r6f85fa4992eb4757b7439e0b06827a1a.service",
+      "count": 1
+    },
+    {
+      "unit": "run-r75e1bfd133f7472bb906ce6108ee1785.service",
+      "count": 1
+    },
+    {
+      "unit": "run-refe6cc4a610c44abbaa72d2d35192dd0.service",
+      "count": 1
+    },
+    {
+      "unit": "run-rf0189ee2ebb942988bed226e490e8281.service",
+      "count": 1
+    },
+    {
+      "unit": "run-rf5a41aee45ff486ea4f6866391545038.service",
+      "count": 1
+    },
+    {
+      "unit": "wazuh-agent.service",
+      "count": 1
+    },
+    {
+      "unit": "run-rcfb4be3ac33e49e9a067a4271cdf122a.service",
+      "count": 1
+    },
+    {
+      "unit": "apache2.service",
+      "count": 1
+    },
+    {
+      "unit": "run-r0442f694a3e14b78a13b52b722bc3490.service",
+      "count": 1
+    },
+    {
+      "unit": "run-r25f30d442e184396a17b8b7bed48372c.service",
+      "count": 1
+    },
+    {
+      "unit": "run-r4055026f772744299e748fa7ee820ae2.service",
+      "count": 1
+    },
+    {
+      "unit": "run-r40b1379fe18e43e0a923258d99995dcc.service",
+      "count": 1
+    },
+    {
+      "unit": "run-r4d8d10b64c2344b0a7a681d89045de93.service",
+      "count": 1
+    },
+    {
+      "unit": "run-rc6a5447f8c0f418784e6158ac84d0493.service",
+      "count": 1
+    },
+    {
+      "unit": "user@1001.service",
+      "count": 1
+    },
+    {
+      "unit": "aidecheck.service",
+      "count": 1
+    },
+    {
+      "unit": "run-r0028cc8732904455b5e674069a603dd8.service",
+      "count": 1
+    },
+    {
+      "unit": "run-r084539b567104794996a5bc5d3e7b9a2.service",
+      "count": 1
+    },
+    {
+      "unit": "run-r08e1e1661e044ccaa94dbb1b6768e906.service",
+      "count": 1
+    },
+    {
+      "unit": "run-r19497b0de7dd4b61bf841599f195c360.service",
+      "count": 1
+    },
+    {
+      "unit": "run-r79a65b2acfa14cd68376947c41320c66.service",
+      "count": 1
+    },
+    {
+      "unit": "run-r7c047afed86744b3936c87660a54bce1.service",
+      "count": 1
+    },
+    {
+      "unit": "run-r8c3c7f1e050246fbb6468ba93810862d.service",
+      "count": 1
+    },
+    {
+      "unit": "run-rd2ae55be6b3f484792b282e1574cba17.service",
+      "count": 1
+    },
+    {
+      "unit": "run-rdba8ab5faa1c4e19ac18bd8e5a3606e2.service",
+      "count": 1
+    },
+    {
+      "unit": "run-rfe5425150d63444f99a47dbf677278b5.service",
+      "count": 1
+    },
+    {
+      "unit": "ua-auto-attach.service",
+      "count": 1
+    },
+    {
+      "unit": "user@1002.service",
+      "count": 1
+    },
+    {
+      "unit": "swap.img.swap",
+      "count": 1
+    }
+  ],
+  "failed_rows": [
+    {
+      "server_id": "vm-app-penjadwalan-kereta-lrt-prd-dcd-192.168.64.9",
+      "application": "app-penjadwalan-kereta",
+      "lokasi": "DCD",
+      "target": "192.168.64.9:9100",
+      "unit": "aidecheck.service",
+      "type": "simple"
+    },
+    {
+      "server_id": "vm-dashboard-survey-pelanggan-lrt-prd-dcc-172.18.8.114",
+      "application": "dashboard-survey-pelanggan",
+      "lokasi": "DCC Vmware",
+      "target": "172.18.8.114:9100",
+      "unit": "apache2.service",
+      "type": "forking"
+    },
+    {
+      "server_id": "vm-app-survey-pelanggan-lrt-prd-dcc-172.18.8.112",
+      "application": "app-survey-pelanggan",
+      "lokasi": "DCC Vmware",
+      "target": "172.18.8.112:9100",
+      "unit": "apparmor.service",
+      "type": "oneshot"
+    },
+    {
+      "server_id": "vm-app-survey-pelanggan-lrt-prd-dcc-172.18.8.112",
+      "application": "app-survey-pelanggan",
+      "lokasi": "DCC Vmware",
+      "target": "172.18.8.112:9100",
+      "unit": "apport.service",
+      "type": "forking"
+    },
+    {
+      "server_id": "vm-app-survey-pelanggan-lrt-prd-dcc-172.18.8.112",
+      "application": "app-survey-pelanggan",
+      "lokasi": "DCC Vmware",
+      "target": "172.18.8.112:9100",
+      "unit": "console-setup.service",
+      "type": "oneshot"
+    },
+    {
+      "server_id": "vm-app-agent-jenkins-lrt-dev-dcc-192.168.38.22",
+      "application": "app-agent-jenkins",
+      "lokasi": "DCC Nutanix",
+      "target": "192.168.38.22:9100",
+      "unit": "dailyaidecheck.service",
+      "type": "oneshot"
+    },
+    {
+      "server_id": "vm-app-agent-jenkins-lrt-prd-dcd-192.168.64.26",
+      "application": "app-agent-jenkins",
+      "lokasi": "DCD",
+      "target": "192.168.64.26:9100",
+      "unit": "dailyaidecheck.service",
+      "type": "oneshot"
+    },
+    {
+      "server_id": "vm-app-cs-pengaduan-lrt-prd-dcd-192.168.64.4",
+      "application": "app-cs-pengaduan",
+      "lokasi": "DCD",
+      "target": "192.168.64.4:9100",
+      "unit": "dailyaidecheck.service",
+      "type": "oneshot"
+    },
+    {
+      "server_id": "vm-app-daily-check-backend-lrt-prd-dcd-192.168.64.24",
+      "application": "app-daily-check-backend",
+      "lokasi": "DCD",
+      "target": "192.168.64.24:9100",
+      "unit": "dailyaidecheck.service",
+      "type": "oneshot"
+    },
+    {
+      "server_id": "vm-app-docker-lrt-dev-dcc-192.168.38.24",
+      "application": "app-docker",
+      "lokasi": "DCC Nutanix",
+      "target": "192.168.38.24:9100",
+      "unit": "dailyaidecheck.service",
+      "type": "oneshot"
+    },
+    {
+      "server_id": "vm-app-jenkins-lrt-dev-dcc-192.168.38.23",
+      "application": "app-jenkins",
+      "lokasi": "DCC Nutanix",
+      "target": "192.168.38.23:9100",
+      "unit": "dailyaidecheck.service",
+      "type": "oneshot"
+    },
+    {
+      "server_id": "vm-app-master-jenkins-lrt-prd-dcd-192.168.64.25",
+      "application": "app-master-jenkins",
+      "lokasi": "DCD",
+      "target": "192.168.64.25:9100",
+      "unit": "dailyaidecheck.service",
+      "type": "oneshot"
+    },
+    {
+      "server_id": "vm-app-osis-lrt-dev-dcd-192.168.64.20",
+      "application": "app-osis",
+      "lokasi": "DCD",
+      "target": "192.168.64.20:9100",
+      "unit": "dailyaidecheck.service",
+      "type": "oneshot"
+    },
+    {
+      "server_id": "vm-app-peta-interaktif-lrt-prd-dcd-192.168.64.2",
+      "application": "app-peta-interaktif",
+      "lokasi": "DCD",
+      "target": "192.168.64.2:9100",
+      "unit": "dailyaidecheck.service",
+      "type": "oneshot"
+    },
+    {
+      "server_id": "vm-app-portal-layanan-lrt-prd-dcd-192.168.64.7",
+      "application": "app-portal-layanan",
+      "lokasi": "DCD",
+      "target": "192.168.64.7:9100",
+      "unit": "dailyaidecheck.service",
+      "type": "oneshot"
+    },
+    {
+      "server_id": "vm-app-sonar-qube-lrt-prd-dcd-192.168.64.16",
+      "application": "app-sonar-qube",
+      "lokasi": "DCD",
+      "target": "192.168.64.16:9100",
+      "unit": "dailyaidecheck.service",
+      "type": "oneshot"
+    },
+    {
+      "server_id": "vm-db-csm-lrt-prd-dcd-192.168.64.5",
+      "application": "db-csm",
+      "lokasi": "DCD",
+      "target": "192.168.64.5:9100",
+      "unit": "dailyaidecheck.service",
+      "type": "oneshot"
+    },
+    {
+      "server_id": "vm-db-daily-check-lrt-prd-dcd-192.168.64.23",
+      "application": "db-daily-check",
+      "lokasi": "DCD",
+      "target": "192.168.64.23:9100",
+      "unit": "dailyaidecheck.service",
+      "type": "oneshot"
+    },
+    {
+      "server_id": "vm-db-peta-interaktif-lrt-prd-dcd-192.168.64.3",
+      "application": "db-peta-interaktif",
+      "lokasi": "DCD",
+      "target": "192.168.64.3:9100",
+      "unit": "dailyaidecheck.service",
+      "type": "oneshot"
+    },
+    {
+      "server_id": "vm-app-survey-pelanggan-lrt-prd-dcc-172.18.8.112",
+      "application": "app-survey-pelanggan",
+      "lokasi": "DCC Vmware",
+      "target": "172.18.8.112:9100",
+      "unit": "keyboard-setup.service",
+      "type": "oneshot"
+    },
+    {
+      "server_id": "vm-app-survey-pelanggan-lrt-prd-dcc-172.18.8.112",
+      "application": "app-survey-pelanggan",
+      "lokasi": "DCC Vmware",
+      "target": "172.18.8.112:9100",
+      "unit": "logrotate.service",
+      "type": "oneshot"
+    },
+    {
+      "server_id": "vm-dashboard-survey-pelanggan-lrt-prd-dcc-172.18.8.114",
+      "application": "dashboard-survey-pelanggan",
+      "lokasi": "DCC Vmware",
+      "target": "172.18.8.114:9100",
+      "unit": "logrotate.service",
+      "type": "oneshot"
+    },
+    {
+      "server_id": "vm-app-development-lrt-dev-dcd-192.168.64.12",
+      "application": "app-development",
+      "lokasi": "DCD",
+      "target": "192.168.64.12:9100",
+      "unit": "nginx.service",
+      "type": "forking"
+    },
+    {
+      "server_id": "vm-dashboard-survey-pelanggan-lrt-prd-dcc-172.18.8.114",
+      "application": "dashboard-survey-pelanggan",
+      "lokasi": "DCC Vmware",
+      "target": "172.18.8.114:9100",
+      "unit": "nginx.service",
+      "type": "forking"
+    },
+    {
+      "server_id": "vm-app-development-lrt-dev-dcd-192.168.64.12",
+      "application": "app-development",
+      "lokasi": "DCD",
+      "target": "192.168.64.12:9100",
+      "unit": "postfix@-.service",
+      "type": "forking"
+    },
+    {
+      "server_id": "vm-app-penjadwalan-kereta-lrt-prd-dcd-192.168.64.9",
+      "application": "app-penjadwalan-kereta",
+      "lokasi": "DCD",
+      "target": "192.168.64.9:9100",
+      "unit": "postfix@-.service",
+      "type": "forking"
+    },
+    {
+      "server_id": "vm-dashboard-survey-pelanggan-lrt-prd-dcc-172.18.8.114",
+      "application": "dashboard-survey-pelanggan",
+      "lokasi": "DCC Vmware",
+      "target": "172.18.8.114:9100",
+      "unit": "postfix@-.service",
+      "type": "forking"
+    },
+    {
+      "server_id": "vm-db-survey-pelanggan-lrt-prd-dcc-172.18.8.113",
+      "application": "db-survey-pelanggan",
+      "lokasi": "DCC Vmware",
+      "target": "172.18.8.113:9100",
+      "unit": "postfix@-.service",
+      "type": "forking"
+    },
+    {
+      "server_id": "vm-app-development-lrt-dev-dcd-192.168.64.12",
+      "application": "app-development",
+      "lokasi": "DCD",
+      "target": "192.168.64.12:9100",
+      "unit": "postgresql@14-main.service",
+      "type": "forking"
+    },
+    {
+      "server_id": "vm-db-survey-pelanggan-lrt-prd-dcc-172.18.8.113",
+      "application": "db-survey-pelanggan",
+      "lokasi": "DCC Vmware",
+      "target": "172.18.8.113:9100",
+      "unit": "postgresql@14-main.service",
+      "type": "forking"
+    },
+    {
+      "server_id": "vm-app-penjadwalan-kereta-lrt-prd-dcd-192.168.64.9",
+      "application": "app-penjadwalan-kereta",
+      "lokasi": "DCD",
+      "target": "192.168.64.9:9100",
+      "unit": "run-r0028cc8732904455b5e674069a603dd8.service",
+      "type": "simple"
+    },
+    {
+      "server_id": "vm-app-survey-pelanggan-lrt-prd-dcc-172.18.8.112",
+      "application": "app-survey-pelanggan",
+      "lokasi": "DCC Vmware",
+      "target": "172.18.8.112:9100",
+      "unit": "run-r025664aba634405d8aadf39a905e22ff.service",
+      "type": "simple"
+    },
+    {
+      "server_id": "vm-dashboard-survey-pelanggan-lrt-prd-dcc-172.18.8.114",
+      "application": "dashboard-survey-pelanggan",
+      "lokasi": "DCC Vmware",
+      "target": "172.18.8.114:9100",
+      "unit": "run-r0442f694a3e14b78a13b52b722bc3490.service",
+      "type": "simple"
+    },
+    {
+      "server_id": "vm-app-penjadwalan-kereta-lrt-prd-dcd-192.168.64.9",
+      "application": "app-penjadwalan-kereta",
+      "lokasi": "DCD",
+      "target": "192.168.64.9:9100",
+      "unit": "run-r084539b567104794996a5bc5d3e7b9a2.service",
+      "type": "simple"
+    },
+    {
+      "server_id": "vm-app-penjadwalan-kereta-lrt-prd-dcd-192.168.64.9",
+      "application": "app-penjadwalan-kereta",
+      "lokasi": "DCD",
+      "target": "192.168.64.9:9100",
+      "unit": "run-r08e1e1661e044ccaa94dbb1b6768e906.service",
+      "type": "simple"
+    },
+    {
+      "server_id": "vm-app-penjadwalan-kereta-lrt-prd-dcd-192.168.64.9",
+      "application": "app-penjadwalan-kereta",
+      "lokasi": "DCD",
+      "target": "192.168.64.9:9100",
+      "unit": "run-r19497b0de7dd4b61bf841599f195c360.service",
+      "type": "simple"
+    },
+    {
+      "server_id": "vm-dashboard-survey-pelanggan-lrt-prd-dcc-172.18.8.114",
+      "application": "dashboard-survey-pelanggan",
+      "lokasi": "DCC Vmware",
+      "target": "172.18.8.114:9100",
+      "unit": "run-r25f30d442e184396a17b8b7bed48372c.service",
+      "type": "simple"
+    },
+    {
+      "server_id": "vm-db-survey-pelanggan-lrt-prd-dcc-172.18.8.113",
+      "application": "db-survey-pelanggan",
+      "lokasi": "DCC Vmware",
+      "target": "172.18.8.113:9100",
+      "unit": "run-r319efaf3692b46f6a6c1af936b633faa.service",
+      "type": "simple"
+    },
+    {
+      "server_id": "vm-dashboard-survey-pelanggan-lrt-prd-dcc-172.18.8.114",
+      "application": "dashboard-survey-pelanggan",
+      "lokasi": "DCC Vmware",
+      "target": "172.18.8.114:9100",
+      "unit": "run-r4055026f772744299e748fa7ee820ae2.service",
+      "type": "simple"
+    },
+    {
+      "server_id": "vm-dashboard-survey-pelanggan-lrt-prd-dcc-172.18.8.114",
+      "application": "dashboard-survey-pelanggan",
+      "lokasi": "DCC Vmware",
+      "target": "172.18.8.114:9100",
+      "unit": "run-r40b1379fe18e43e0a923258d99995dcc.service",
+      "type": "simple"
+    },
+    {
+      "server_id": "vm-dashboard-survey-pelanggan-lrt-prd-dcc-172.18.8.114",
+      "application": "dashboard-survey-pelanggan",
+      "lokasi": "DCC Vmware",
+      "target": "172.18.8.114:9100",
+      "unit": "run-r4d8d10b64c2344b0a7a681d89045de93.service",
+      "type": "simple"
+    },
+    {
+      "server_id": "vm-app-survey-pelanggan-lrt-prd-dcc-172.18.8.112",
+      "application": "app-survey-pelanggan",
+      "lokasi": "DCC Vmware",
+      "target": "172.18.8.112:9100",
+      "unit": "run-r573389be8f704ecf968f081a73e2c258.service",
+      "type": "simple"
+    },
+    {
+      "server_id": "vm-db-survey-pelanggan-lrt-prd-dcc-172.18.8.113",
+      "application": "db-survey-pelanggan",
+      "lokasi": "DCC Vmware",
+      "target": "172.18.8.113:9100",
+      "unit": "run-r6f85fa4992eb4757b7439e0b06827a1a.service",
+      "type": "simple"
+    },
+    {
+      "server_id": "vm-db-survey-pelanggan-lrt-prd-dcc-172.18.8.113",
+      "application": "db-survey-pelanggan",
+      "lokasi": "DCC Vmware",
+      "target": "172.18.8.113:9100",
+      "unit": "run-r75e1bfd133f7472bb906ce6108ee1785.service",
+      "type": "simple"
+    },
+    {
+      "server_id": "vm-app-penjadwalan-kereta-lrt-prd-dcd-192.168.64.9",
+      "application": "app-penjadwalan-kereta",
+      "lokasi": "DCD",
+      "target": "192.168.64.9:9100",
+      "unit": "run-r79a65b2acfa14cd68376947c41320c66.service",
+      "type": "simple"
+    },
+    {
+      "server_id": "vm-app-penjadwalan-kereta-lrt-prd-dcd-192.168.64.9",
+      "application": "app-penjadwalan-kereta",
+      "lokasi": "DCD",
+      "target": "192.168.64.9:9100",
+      "unit": "run-r7c047afed86744b3936c87660a54bce1.service",
+      "type": "simple"
+    },
+    {
+      "server_id": "vm-app-penjadwalan-kereta-lrt-prd-dcd-192.168.64.9",
+      "application": "app-penjadwalan-kereta",
+      "lokasi": "DCD",
+      "target": "192.168.64.9:9100",
+      "unit": "run-r8c3c7f1e050246fbb6468ba93810862d.service",
+      "type": "simple"
+    },
+    {
+      "server_id": "vm-app-agent-jenkins-lrt-dev-dcc-192.168.38.22",
+      "application": "app-agent-jenkins",
+      "lokasi": "DCC Nutanix",
+      "target": "192.168.38.22:9100",
+      "unit": "run-r8ddefe7b8bed4c7ab79336c7659829ce.service",
+      "type": "simple"
+    },
+    {
+      "server_id": "vm-app-survey-pelanggan-lrt-prd-dcc-172.18.8.112",
+      "application": "app-survey-pelanggan",
+      "lokasi": "DCC Vmware",
+      "target": "172.18.8.112:9100",
+      "unit": "run-ra8abba4dafae44239e13e5459e156f6a.service",
+      "type": "simple"
+    },
+    {
+      "server_id": "vm-app-survey-pelanggan-lrt-prd-dcc-172.18.8.112",
+      "application": "app-survey-pelanggan",
+      "lokasi": "DCC Vmware",
+      "target": "172.18.8.112:9100",
+      "unit": "run-rb1670d29807548538c84ea88c77b0d8a.service",
+      "type": "simple"
+    },
+    {
+      "server_id": "vm-app-survey-pelanggan-lrt-prd-dcc-172.18.8.112",
+      "application": "app-survey-pelanggan",
+      "lokasi": "DCC Vmware",
+      "target": "172.18.8.112:9100",
+      "unit": "run-rc5965ed7135d43d6b24fe5c3298738a9.service",
+      "type": "simple"
+    },
+    {
+      "server_id": "vm-dashboard-survey-pelanggan-lrt-prd-dcc-172.18.8.114",
+      "application": "dashboard-survey-pelanggan",
+      "lokasi": "DCC Vmware",
+      "target": "172.18.8.114:9100",
+      "unit": "run-rc6a5447f8c0f418784e6158ac84d0493.service",
+      "type": "simple"
+    },
+    {
+      "server_id": "vm-app-survey-pelanggan-lrt-prd-dcc-172.18.8.112",
+      "application": "app-survey-pelanggan",
+      "lokasi": "DCC Vmware",
+      "target": "172.18.8.112:9100",
+      "unit": "run-rc838fce8676b410d8f47a7dbab3a74ef.service",
+      "type": "simple"
+    },
+    {
+      "server_id": "vm-app-peta-interaktif-lrt-prd-dcd-192.168.64.2",
+      "application": "app-peta-interaktif",
+      "lokasi": "DCD",
+      "target": "192.168.64.2:9100",
+      "unit": "run-rcfb4be3ac33e49e9a067a4271cdf122a.service",
+      "type": "simple"
+    },
+    {
+      "server_id": "vm-app-penjadwalan-kereta-lrt-prd-dcd-192.168.64.9",
+      "application": "app-penjadwalan-kereta",
+      "lokasi": "DCD",
+      "target": "192.168.64.9:9100",
+      "unit": "run-rd2ae55be6b3f484792b282e1574cba17.service",
+      "type": "simple"
+    },
+    {
+      "server_id": "vm-app-penjadwalan-kereta-lrt-prd-dcd-192.168.64.9",
+      "application": "app-penjadwalan-kereta",
+      "lokasi": "DCD",
+      "target": "192.168.64.9:9100",
+      "unit": "run-rdba8ab5faa1c4e19ac18bd8e5a3606e2.service",
+      "type": "simple"
+    },
+    {
+      "server_id": "vm-db-survey-pelanggan-lrt-prd-dcc-172.18.8.113",
+      "application": "db-survey-pelanggan",
+      "lokasi": "DCC Vmware",
+      "target": "172.18.8.113:9100",
+      "unit": "run-refe6cc4a610c44abbaa72d2d35192dd0.service",
+      "type": "simple"
+    },
+    {
+      "server_id": "vm-db-survey-pelanggan-lrt-prd-dcc-172.18.8.113",
+      "application": "db-survey-pelanggan",
+      "lokasi": "DCC Vmware",
+      "target": "172.18.8.113:9100",
+      "unit": "run-rf0189ee2ebb942988bed226e490e8281.service",
+      "type": "simple"
+    },
+    {
+      "server_id": "vm-db-survey-pelanggan-lrt-prd-dcc-172.18.8.113",
+      "application": "db-survey-pelanggan",
+      "lokasi": "DCC Vmware",
+      "target": "172.18.8.113:9100",
+      "unit": "run-rf5a41aee45ff486ea4f6866391545038.service",
+      "type": "simple"
+    },
+    {
+      "server_id": "vm-app-penjadwalan-kereta-lrt-prd-dcd-192.168.64.9",
+      "application": "app-penjadwalan-kereta",
+      "lokasi": "DCD",
+      "target": "192.168.64.9:9100",
+      "unit": "run-rfe5425150d63444f99a47dbf677278b5.service",
+      "type": "simple"
+    },
+    {
+      "server_id": "vm-db-csm-lrt-prd-dcd-192.168.64.5",
+      "application": "db-csm",
+      "lokasi": "DCD",
+      "target": "192.168.64.5:9100",
+      "unit": "swap.img.swap",
+      "type": ""
+    },
+    {
+      "server_id": "be-osis-lrtjabodebek-192.168.145.102",
+      "application": "be-osis",
+      "lokasi": "LRT",
+      "target": "192.168.145.102:9100",
+      "unit": "systemd-networkd-wait-online.service",
+      "type": "oneshot"
+    },
+    {
+      "server_id": "dbmaster-osis-lrtjabodebek-192.168.145.103",
+      "application": "dbmaster-osis",
+      "lokasi": "LRT",
+      "target": "192.168.145.103:9100",
+      "unit": "systemd-networkd-wait-online.service",
+      "type": "oneshot"
+    },
+    {
+      "server_id": "fsk-backend-peoplecounting-prod-occ_10.19.1.101",
+      "application": "peoplecounting",
+      "lokasi": "LRT",
+      "target": "10.19.1.101:9100",
+      "unit": "systemd-networkd-wait-online.service",
+      "type": "oneshot"
+    },
+    {
+      "server_id": "vm-fe-osis-192.168.145.101",
+      "application": "fe-osis",
+      "lokasi": "LRT",
+      "target": "192.168.145.101:9100",
+      "unit": "systemd-networkd-wait-online.service",
+      "type": "oneshot"
+    },
+    {
+      "server_id": "vm-app-agent-jenkins-lrt-dev-dcc-192.168.38.22",
+      "application": "app-agent-jenkins",
+      "lokasi": "DCC Nutanix",
+      "target": "192.168.38.22:9100",
+      "unit": "systemd-sysctl.service",
+      "type": "oneshot"
+    },
+    {
+      "server_id": "vm-app-agent-jenkins-lrt-prd-dcd-192.168.64.26",
+      "application": "app-agent-jenkins",
+      "lokasi": "DCD",
+      "target": "192.168.64.26:9100",
+      "unit": "systemd-sysctl.service",
+      "type": "oneshot"
+    },
+    {
+      "server_id": "vm-app-cs-pengaduan-lrt-prd-dcd-192.168.64.4",
+      "application": "app-cs-pengaduan",
+      "lokasi": "DCD",
+      "target": "192.168.64.4:9100",
+      "unit": "systemd-sysctl.service",
+      "type": "oneshot"
+    },
+    {
+      "server_id": "vm-app-daily-check-backend-lrt-prd-dcd-192.168.64.24",
+      "application": "app-daily-check-backend",
+      "lokasi": "DCD",
+      "target": "192.168.64.24:9100",
+      "unit": "systemd-sysctl.service",
+      "type": "oneshot"
+    },
+    {
+      "server_id": "vm-app-docker-lrt-dev-dcc-192.168.38.24",
+      "application": "app-docker",
+      "lokasi": "DCC Nutanix",
+      "target": "192.168.38.24:9100",
+      "unit": "systemd-sysctl.service",
+      "type": "oneshot"
+    },
+    {
+      "server_id": "vm-app-jenkins-lrt-dev-dcc-192.168.38.23",
+      "application": "app-jenkins",
+      "lokasi": "DCC Nutanix",
+      "target": "192.168.38.23:9100",
+      "unit": "systemd-sysctl.service",
+      "type": "oneshot"
+    },
+    {
+      "server_id": "vm-app-master-jenkins-lrt-prd-dcd-192.168.64.25",
+      "application": "app-master-jenkins",
+      "lokasi": "DCD",
+      "target": "192.168.64.25:9100",
+      "unit": "systemd-sysctl.service",
+      "type": "oneshot"
+    },
+    {
+      "server_id": "vm-app-osis-lrt-dev-dcd-192.168.64.20",
+      "application": "app-osis",
+      "lokasi": "DCD",
+      "target": "192.168.64.20:9100",
+      "unit": "systemd-sysctl.service",
+      "type": "oneshot"
+    },
+    {
+      "server_id": "vm-app-peta-interaktif-lrt-prd-dcd-192.168.64.2",
+      "application": "app-peta-interaktif",
+      "lokasi": "DCD",
+      "target": "192.168.64.2:9100",
+      "unit": "systemd-sysctl.service",
+      "type": "oneshot"
+    },
+    {
+      "server_id": "vm-app-portal-layanan-lrt-prd-dcd-192.168.64.7",
+      "application": "app-portal-layanan",
+      "lokasi": "DCD",
+      "target": "192.168.64.7:9100",
+      "unit": "systemd-sysctl.service",
+      "type": "oneshot"
+    },
+    {
+      "server_id": "vm-app-sonar-qube-lrt-prd-dcd-192.168.64.16",
+      "application": "app-sonar-qube",
+      "lokasi": "DCD",
+      "target": "192.168.64.16:9100",
+      "unit": "systemd-sysctl.service",
+      "type": "oneshot"
+    },
+    {
+      "server_id": "vm-db-csm-lrt-prd-dcd-192.168.64.5",
+      "application": "db-csm",
+      "lokasi": "DCD",
+      "target": "192.168.64.5:9100",
+      "unit": "systemd-sysctl.service",
+      "type": "oneshot"
+    },
+    {
+      "server_id": "vm-db-daily-check-lrt-prd-dcd-192.168.64.23",
+      "application": "db-daily-check",
+      "lokasi": "DCD",
+      "target": "192.168.64.23:9100",
+      "unit": "systemd-sysctl.service",
+      "type": "oneshot"
+    },
+    {
+      "server_id": "vm-db-peta-interaktif-lrt-prd-dcd-192.168.64.3",
+      "application": "db-peta-interaktif",
+      "lokasi": "DCD",
+      "target": "192.168.64.3:9100",
+      "unit": "systemd-sysctl.service",
+      "type": "oneshot"
+    },
+    {
+      "server_id": "vm-app-penjadwalan-kereta-lrt-prd-dcd-192.168.64.9",
+      "application": "app-penjadwalan-kereta",
+      "lokasi": "DCD",
+      "target": "192.168.64.9:9100",
+      "unit": "ua-auto-attach.service",
+      "type": "oneshot"
+    },
+    {
+      "server_id": "vm-app-survey-pelanggan-lrt-prd-dcc-172.18.8.112",
+      "application": "app-survey-pelanggan",
+      "lokasi": "DCC Vmware",
+      "target": "172.18.8.112:9100",
+      "unit": "udisks2.service",
+      "type": "dbus"
+    },
+    {
+      "server_id": "vm-app-survey-pelanggan-lrt-prd-dcc-172.18.8.112",
+      "application": "app-survey-pelanggan",
+      "lokasi": "DCC Vmware",
+      "target": "172.18.8.112:9100",
+      "unit": "ufw.service",
+      "type": "oneshot"
+    },
+    {
+      "server_id": "vm-dashboard-survey-pelanggan-lrt-prd-dcc-172.18.8.114",
+      "application": "dashboard-survey-pelanggan",
+      "lokasi": "DCC Vmware",
+      "target": "172.18.8.114:9100",
+      "unit": "user@1001.service",
+      "type": "notify"
+    },
+    {
+      "server_id": "vm-app-osis-lrt-dev-dcd-192.168.64.20",
+      "application": "app-osis",
+      "lokasi": "DCD",
+      "target": "192.168.64.20:9100",
+      "unit": "user@1002.service",
+      "type": "notify-reload"
+    },
+    {
+      "server_id": "vm-db-survey-pelanggan-lrt-prd-dcc-172.18.8.113",
+      "application": "db-survey-pelanggan",
+      "lokasi": "DCC Vmware",
+      "target": "172.18.8.113:9100",
+      "unit": "wazuh-agent.service",
+      "type": "forking"
+    }
+  ]
+}

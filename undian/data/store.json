@@ -1,0 +1,27 @@
+{
+  "pengaturan": {
+    "namaKegiatan": "Doorprize HUT LRT"
+  },
+  "peserta": [
+    {
+      "id": "mw5vrpnu-ohr6l8",
+      "nama": "Andi Wijaya",
+      "keterangan": "IT",
+      "createdAt": "2026-11-07T04:05:36.810Z"
+    },
+    {
+      "id": "mw5vrq0q-gywqq9",
+      "nama": "Citra Lestari",
+      "keterangan": "HR",
+      "createdAt": "2026-11-07T04:05:37.274Z"
+    },
+    {
+      "id": "mw5vrpzh-fa6n63",
+      "nama": "Budi Santoso",
+      "keterangan": "Ops",
+      "createdAt": "2026-11-07T04:05:37.229Z"
+    }
+  ],
+  "hadiah": [],
+  "pemenang": []
+}

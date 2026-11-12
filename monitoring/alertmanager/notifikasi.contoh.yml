@@ -1,0 +1,17 @@
+# Salin blok ini ke receivers di alertmanager.yml setelah token siap.
+#
+#   telegram_configs:
+#     - bot_token: "123:ABC"
+#       chat_id: 123456789
+#       parse_mode: HTML
+#       send_resolved: true
+#       message: |
+#         <b>{{ .Status | toUpper }}</b> {{ .CommonLabels.alertname }}
+#         Server: {{ .CommonLabels.server_id }}
+#         {{ range .Alerts }}{{ .Annotations.summary }}{{ end }}
+#
+# Email:
+#   email_configs:
+#     - to: "ops@example.com"
+#       send_resolved: true
+# Dan set global.smtp_smarthost / smtp_from.

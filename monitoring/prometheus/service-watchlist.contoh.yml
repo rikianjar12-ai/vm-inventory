@@ -1,0 +1,25 @@
+# Daftar unit systemd yang ingin diwaspadai (per server / global).
+# Salin ke service-watchlist.yml lalu isi sesuai kebutuhan.
+#
+# Cara pakai setelah diisi:
+# 1. Gabungkan nama unit jadi regex, contoh: nginx.service|postgresql.service|sshd.service
+# 2. Ganti nilai di prometheus/alerts.yml pada alert ServiceGagal (name=~"...")
+# 3. Di Grafana, ubah variabel "service_unit" ke regex yang sama
+# 4. curl -X POST http://127.0.0.1:9091/-/reload
+#
+# Contoh:
+# units:
+#   - nginx.service
+#   - postgresql.service
+#   - docker.service
+#
+# Atau per server:
+# servers:
+#   vm-app-pso-lrt-prd-dc-172.16.27.60:
+#     - nginx.service
+#     - php-fpm.service
+#   vm-db-pso-lrt-prd-dc-172.16.27.61:
+#     - postgresql.service
+
+units: []
+servers: {}

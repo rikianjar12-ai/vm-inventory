@@ -1,0 +1,3 @@
+# Salin ke nodes.yml dan isi hanya server yang agent-nya sudah terpasang.
+# File nodes.yml tidak di-commit (lokal di server pantauan).
+[]

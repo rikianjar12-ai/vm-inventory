@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+
+    <title>VM Inventory</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+
+        h1 {
+            margin-bottom: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<h1>VM Inventory</h1>
+
+<p>Daftar Virtual Machine</p>
+
+<a href="#" class="button">
+    + Tambah VM
+</a>
+
+
+<table>
+
+<thead>
+
+<tr>
+
+    <th>ID</th>
+    <th>Hostname</th>
+    <th>IP Address</th>
+    <th>Environment</th>
+    <th>OS</th>
+    <th>CPU</th>
+    <th>RAM</th>
+    <th>Storage</th>
+    <th>Application</th>
+    <th>PIC</th>
+    <th>Status</th>
+    <th>Action</th>
+
+</tr>
+
+</thead>
+
+
+<tbody>
+
+{% for vm in virtual_machines %}
+
+<tr>
+
+    <td>{{ vm[0] }}</td>
+
+    <td>{{ vm[1] }}</td>
+
+    <td>{{ vm[2] }}</td>
+
+    <td>{{ vm[3] }}</td>
+
+    <td>{{ vm[4] }}</td>
+
+    <td>{{ vm[5] }}</td>
+
+    <td>{{ vm[6] }}</td>
+
+    <td>{{ vm[7] }}</td>
+
+    <td>{{ vm[8] }}</td>
+
+    <td>{{ vm[9] }}</td>
+
+    <td>{{ vm[10] }}</td>
+
+    <td>
+
+        <button>Edit</button>
+
+        <button>Delete</button>
+
+    </td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</body>
+
+</html>

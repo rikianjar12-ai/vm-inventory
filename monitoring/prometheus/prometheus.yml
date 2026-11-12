@@ -1,0 +1,91 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  scrape_timeout: 10s
+  external_labels:
+    monitor: lrt-jabodebek
+    datacenter: inventory
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+            - alertmanager:9093
+
+rule_files:
+  - /etc/prometheus/alerts.yml
+
+scrape_configs:
+  - job_name: prometheus
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  - job_name: node
+    file_sd_configs:
+      - files:
+          - /etc/prometheus/targets/nodes.yml
+        refresh_interval: 30s
+    relabel_configs:
+      - source_labels: [__address__]
+        regex: "([^:]+):\\d+"
+        target_label: host
+        replacement: "${1}"
+
+  - job_name: windows
+    file_sd_configs:
+      - files:
+          - /etc/prometheus/targets/windows.yml
+        refresh_interval: 30s
+    relabel_configs:
+      - source_labels: [__address__]
+        regex: "([^:]+):\\d+"
+        target_label: host
+        replacement: "${1}"
+
+  - job_name: process
+    file_sd_configs:
+      - files:
+          - /etc/prometheus/targets/process.yml
+        refresh_interval: 30s
+    relabel_configs:
+      - source_labels: [__address__]
+        regex: "([^:]+):\\d+"
+        target_label: host
+        replacement: "${1}"
+
+  - job_name: blackbox-http
+    metrics_path: /probe
+    file_sd_configs:
+      - files:
+          - /etc/prometheus/targets/http.yml
+        refresh_interval: 30s
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [module]
+        regex: (.+)
+        target_label: __param_module
+      - source_labels: [__param_module]
+        regex: ^$
+        target_label: __param_module
+        replacement: http_any
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox-exporter:9115
+
+  - job_name: blackbox-tcp
+    metrics_path: /probe
+    params:
+      module: [tcp_connect]
+    file_sd_configs:
+      - files:
+          - /etc/prometheus/targets/tcp.yml
+        refresh_interval: 30s
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox-exporter:9115

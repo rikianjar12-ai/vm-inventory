@@ -1,0 +1,4 @@
+# Daftar unit systemd yang dipantau. Saat ini kosong (reset).
+# Isi sesuai contoh di service-watchlist.contoh.yml setelah agent & service siap.
+units: []
+servers: {}

@@ -1,0 +1,9 @@
+.env
+*.log
+
+# Target scrape lokal — jangan ditimpa git pull (hindari Server DOWN palsu)
+prometheus/targets/nodes.yml
+prometheus/targets/process.yml
+prometheus/targets/windows.yml
+prometheus/targets/tcp.yml
+prometheus/targets/http.yml

@@ -1,0 +1,27 @@
+# Saat alert pulih, Prometheus mengirim resolved; pastikan channel (Telegram/email)
+# memakai send_resolved: true — lihat notifikasi.contoh.yml
+global:
+  resolve_timeout: 2m
+
+route:
+  receiver: default
+  group_by: ["alertname", "server_id"]
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 4h
+  routes:
+    - matchers:
+        - severity="critical"
+      receiver: critical
+      repeat_interval: 1h
+
+inhibit_rules:
+  - source_matchers:
+      - alertname="ServerDown"
+    target_matchers:
+      - severity=~"warning|critical"
+    equal: ["instance"]
+
+receivers:
+  - name: default
+  - name: critical

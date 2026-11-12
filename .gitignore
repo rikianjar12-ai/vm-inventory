@@ -1,0 +1,10 @@
+node_modules
+.next
+.next-dev
+.env.local
+monitoring/.env
+venv
+__pycache__
+*.pyc
+.tools
+logs
