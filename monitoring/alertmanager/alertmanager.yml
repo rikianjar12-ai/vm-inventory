@@ -14,12 +14,16 @@ route:
         - severity="critical"
       receiver: critical
       repeat_interval: 1h
+    - matchers:
+        - severity="high"
+      receiver: default
+      repeat_interval: 2h
 
 inhibit_rules:
   - source_matchers:
       - alertname="ServerDown"
     target_matchers:
-      - severity=~"warning|critical"
+      - severity=~"high|warning|critical"
     equal: ["instance"]
 
 receivers:

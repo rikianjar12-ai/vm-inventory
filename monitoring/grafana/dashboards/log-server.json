@@ -251,7 +251,7 @@
   },
   "time": { "from": "now-1h", "to": "now" },
   "timezone": "Asia/Jakarta",
-  "title": "Log Server (syslog, login, service)",
+  "title": "04 Centralized Logs",
   "uid": "lrt-server-logs",
   "version": 2
 }

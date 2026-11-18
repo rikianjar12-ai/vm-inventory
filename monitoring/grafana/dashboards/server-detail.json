@@ -936,7 +936,7 @@
     "to": "now"
   },
   "timezone": "Asia/Jakarta",
-  "title": "Server Detail",
+  "title": "03 Server Deep Dive",
   "uid": "lrt-server-detail",
   "weekStart": "monday",
   "templating": {

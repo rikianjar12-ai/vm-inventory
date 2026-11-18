@@ -141,7 +141,7 @@
     },
     {
       "type": "stat",
-      "title": "Warning",
+      "title": "High",
       "datasource": {
         "type": "prometheus",
         "uid": "prometheus"
@@ -159,8 +159,8 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "count(ALERTS{alertstate=\"firing\",severity=\"warning\"}) or vector(0)",
-          "legendFormat": "Warning",
+          "expr": "count(ALERTS{alertstate=\"firing\",severity=~\"high|warning\"}) or vector(0)",
+          "legendFormat": "High",
           "refId": "A",
           "instant": true,
           "format": "time_series"
@@ -168,7 +168,7 @@
       ],
       "fieldConfig": {
         "defaults": {
-          "displayName": "Warning",
+          "displayName": "High",
           "color": {
             "mode": "fixed",
             "fixedColor": "yellow"
@@ -546,7 +546,7 @@
     "to": "now"
   },
   "timezone": "Asia/Jakarta",
-  "title": "Alert & Insiden",
+  "title": "06 Incident Monitoring",
   "uid": "lrt-alerts",
   "weekStart": "monday"
 }

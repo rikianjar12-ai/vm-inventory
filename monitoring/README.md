@@ -2,17 +2,15 @@
 
 Satu tampilan untuk seluruh server, fisik maupun VM. Halaman utama ada di aplikasi inventory (`/monitoring`) dan di Grafana. Sumber datanya Prometheus.
 
-Ambang yang dipakai kartu Warning dan alert:
+Ambang alert mengikuti standar PPT Observability LRT Jabodebek:
 
-| Parameter | Normal | Warning | Critical |
+| Parameter | High | Critical | Durasi |
 | --- | --- | --- | --- |
-| CPU | di bawah 70% | 70–85% | di atas 85% |
-| RAM | di bawah 75% | 75–90% | di atas 90% |
-| Disk | di bawah 75% | 75–85% | di atas 85% |
-| Server | Online | — | Offline |
-| Service | berjalan | — | mati |
-
-Alert CPU, RAM, dan disk baru menyala setelah kondisi bertahan **10 menit**.
+| Server down | — | Offline | 2 menit |
+| CPU | di atas 85% | — | 10 menit |
+| RAM | di atas 90% | — | 10 menit |
+| Disk | di atas 85% | di atas 95% | 5 menit |
+| Service gagal | — | mati | 2 menit |
 
 ## 1. Jalankan dashboard
 
@@ -36,19 +34,19 @@ docker compose up -d
 | Prometheus | http://127.0.0.1:9091 | hanya di server pantauan |
 | Alertmanager | http://127.0.0.1:9093 | hanya di server pantauan |
 
-Dashboard Grafana, berurutan dari ringkasan ke detail:
+Dashboard Grafana (nama mengikuti PPT):
 
-1. **Data Center Overview** — total server, online, offline, warning, grafik CPU/RAM, tabel kesehatan
-2. **Server Detail** — CPU per core, RAM, swap, disk per mount, I/O, trafik, uptime
-3. **Aplikasi & Database** — service systemd, probe HTTP/TCP, PostgreSQL setelah exporter dipasang
-4. **Jaringan & Infrastruktur** — bandwidth, drop, error interface. SNMP hardware menyusul
-5. **Alert & Insiden** — alert aktif dan proses abnormal
-6. **Log server** — syslog dan log service
+1. **01 Executive Overview** — status, availability, alert aktif
+2. **02 Infrastructure Health** — bandwidth, drop, error interface (SNMP hardware menyusul)
+3. **03 Server Deep Dive** — metrik detail per hostname
+4. **04 Centralized Logs** — syslog, login, log service
+5. **05 Service Availability** — HTTP, TCP, database
+6. **06 Incident Monitoring** — severity & histori alert
 
-Setelah mengubah `alerts.yml`, muat ulang Prometheus:
+Setelah mengubah `alerts.yml`, muat ulang Prometheus dan Alertmanager:
 
 ```powershell
-docker compose restart prometheus
+docker compose restart prometheus alertmanager
 ```
 
 Overview di aplikasi inventory membaca Prometheus lewat `PROMETHEUS_URL`. Di server pantauan, container inventory ikut jaringan `lrt-monitoring_default` dan memakai `http://prometheus:9090`. Jalankan stack monitoring ini dulu, baru inventory.

@@ -1,8 +1,8 @@
 groups:
   - name: kesehatan-server
     rules:
+      # Standar PPT: Server down 2 menit → Critical
       # Hanya server yang PERNAH UP (punya agent) lalu mati.
-      # Target yang belum pernah berhasil di-scrape (belum install agent) tidak memicu alert.
       - alert: ServerDown
         expr: |
           (
@@ -12,51 +12,24 @@ groups:
           (
             max_over_time(up{job=~"node|windows"}[2d]) == 1
           )
-        for: 3m
+        for: 2m
         labels:
           severity: critical
         annotations:
           summary: "Server {{ $labels.server_id }} tidak merespons"
-          description: "Exporter di {{ $labels.instance }} down selama lebih dari 3 menit. Pastikan agent terpasang dan port 9100/9182 terbuka."
+          description: "Exporter di {{ $labels.instance }} down selama lebih dari 2 menit. Pastikan agent terpasang dan port 9100/9182 terbuka."
 
       - alert: LoadTinggi
         expr: node_load1 / count without (cpu, mode) (node_cpu_seconds_total{mode="idle"}) > 1.5
         for: 10m
         labels:
-          severity: warning
+          severity: high
         annotations:
           summary: "Load tinggi di {{ $labels.server_id }}"
           description: "Load 1 menit = {{ $value | humanize }} (melebihi 1.5x jumlah CPU)."
 
+      # Standar PPT: CPU > 85% selama 10 menit → High
       - alert: CpuTinggi
-        expr: |
-          (
-            (
-              100 * (1 - avg by (instance, server_id, application) (rate(node_cpu_seconds_total{mode="idle"}[5m]))) > 70
-            )
-            unless
-            (
-              100 * (1 - avg by (instance, server_id, application) (rate(node_cpu_seconds_total{mode="idle"}[5m]))) > 85
-            )
-          )
-          or
-          (
-            (
-              100 * (1 - avg by (instance, server_id, application) (rate(windows_cpu_time_total{mode="idle"}[5m]))) > 70
-            )
-            unless
-            (
-              100 * (1 - avg by (instance, server_id, application) (rate(windows_cpu_time_total{mode="idle"}[5m]))) > 85
-            )
-          )
-        for: 10m
-        labels:
-          severity: warning
-        annotations:
-          summary: "CPU {{ $labels.server_id }} di atas 70%"
-          description: "Penggunaan CPU {{ $value | humanize }}% selama 10 menit (warning 70–85%)."
-
-      - alert: CpuKritis
         expr: |
           (
             100 * (1 - avg by (instance, server_id, application) (rate(node_cpu_seconds_total{mode="idle"}[5m]))) > 85
@@ -67,14 +40,15 @@ groups:
           )
         for: 10m
         labels:
-          severity: critical
+          severity: high
         annotations:
-          summary: "CPU kritis di {{ $labels.server_id }}"
-          description: "Penggunaan CPU {{ $value | humanize }}% selama 10 menit (kritis di atas 85%)."
+          summary: "CPU {{ $labels.server_id }} di atas 85%"
+          description: "Penggunaan CPU {{ $value | humanize }}% selama 10 menit (standar PPT: High)."
 
   - name: ram-storage
     rules:
-      - alert: RamKritis
+      # Standar PPT: RAM > 90% selama 10 menit → High
+      - alert: RamTinggi
         expr: |
           (
             100 * (1 - node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) > 90
@@ -85,96 +59,74 @@ groups:
           )
         for: 10m
         labels:
-          severity: critical
-        annotations:
-          summary: "RAM kritis di {{ $labels.server_id }}"
-          description: "RAM terpakai {{ $value | humanize }}% selama 10 menit (kritis di atas 90%)."
-
-      - alert: RamTinggi
-        expr: |
-          (
-            100 * (1 - node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) > 75
-          )
-          unless
-          (
-            100 * (1 - node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) > 90
-          )
-          or
-          (
-            (
-              100 * (1 - windows_memory_available_bytes / windows_cs_physical_memory_bytes) > 75
-            )
-            unless
-            (
-              100 * (1 - windows_memory_available_bytes / windows_cs_physical_memory_bytes) > 90
-            )
-          )
-        for: 10m
-        labels:
-          severity: warning
+          severity: high
         annotations:
           summary: "RAM tinggi di {{ $labels.server_id }}"
-          description: "RAM terpakai {{ $value | humanize }}% (warning 75–90%)."
+          description: "RAM terpakai {{ $value | humanize }}% selama 10 menit (standar PPT: High di atas 90%)."
 
-      - alert: StorageKritis
-        expr: |
-          (
-            100 - (
-              100 * node_filesystem_avail_bytes{fstype!~"tmpfs|overlay|squashfs|devtmpfs"}
-              / node_filesystem_size_bytes{fstype!~"tmpfs|overlay|squashfs|devtmpfs"}
-            ) > 85
-          )
-          or
-          (
-            100 - (
-              100 * windows_logical_disk_free_bytes{volume=~"[A-Z]:"}
-              / windows_logical_disk_size_bytes{volume=~"[A-Z]:"}
-            ) > 85
-          )
-        for: 10m
-        labels:
-          severity: critical
-        annotations:
-          summary: "Storage kritis {{ $labels.mountpoint }}{{ $labels.volume }} di {{ $labels.server_id }}"
-          description: "Disk {{ $labels.mountpoint }}{{ $labels.volume }} terpakai {{ $value | humanize }}% (kritis di atas 85%)."
-
+      # Standar PPT: Disk > 85% selama 5 menit → High
       - alert: StorageTinggi
         expr: |
           (
-            100 - (
-              100 * node_filesystem_avail_bytes{fstype!~"tmpfs|overlay|squashfs|devtmpfs"}
-              / node_filesystem_size_bytes{fstype!~"tmpfs|overlay|squashfs|devtmpfs"}
-            ) > 75
-          )
-          unless
-          (
-            100 - (
-              100 * node_filesystem_avail_bytes{fstype!~"tmpfs|overlay|squashfs|devtmpfs"}
-              / node_filesystem_size_bytes{fstype!~"tmpfs|overlay|squashfs|devtmpfs"}
-            ) > 85
+            (
+              100 - (
+                100 * node_filesystem_avail_bytes{fstype!~"tmpfs|overlay|squashfs|devtmpfs"}
+                / node_filesystem_size_bytes{fstype!~"tmpfs|overlay|squashfs|devtmpfs"}
+              ) > 85
+            )
+            unless
+            (
+              100 - (
+                100 * node_filesystem_avail_bytes{fstype!~"tmpfs|overlay|squashfs|devtmpfs"}
+                / node_filesystem_size_bytes{fstype!~"tmpfs|overlay|squashfs|devtmpfs"}
+              ) > 95
+            )
           )
           or
           (
-            (
-              100 - (
-                100 * windows_logical_disk_free_bytes{volume=~"[A-Z]:"}
-                / windows_logical_disk_size_bytes{volume=~"[A-Z]:"}
-              ) > 75
-            )
-            unless
             (
               100 - (
                 100 * windows_logical_disk_free_bytes{volume=~"[A-Z]:"}
                 / windows_logical_disk_size_bytes{volume=~"[A-Z]:"}
               ) > 85
             )
+            unless
+            (
+              100 - (
+                100 * windows_logical_disk_free_bytes{volume=~"[A-Z]:"}
+                / windows_logical_disk_size_bytes{volume=~"[A-Z]:"}
+              ) > 95
+            )
           )
-        for: 10m
+        for: 5m
         labels:
-          severity: warning
+          severity: high
         annotations:
           summary: "Storage tinggi {{ $labels.mountpoint }}{{ $labels.volume }} di {{ $labels.server_id }}"
-          description: "Disk {{ $labels.mountpoint }}{{ $labels.volume }} terpakai {{ $value | humanize }}% (warning 75–85%)."
+          description: "Disk {{ $labels.mountpoint }}{{ $labels.volume }} terpakai {{ $value | humanize }}% (standar PPT: High 85–95%)."
+
+      # Standar PPT: Disk > 95% selama 5 menit → Critical
+      - alert: StorageKritis
+        expr: |
+          (
+            100 - (
+              100 * node_filesystem_avail_bytes{fstype!~"tmpfs|overlay|squashfs|devtmpfs"}
+              / node_filesystem_size_bytes{fstype!~"tmpfs|overlay|squashfs|devtmpfs"}
+            ) > 95
+          )
+          or
+          (
+            100 - (
+              100 * windows_logical_disk_free_bytes{volume=~"[A-Z]:"}
+              / windows_logical_disk_size_bytes{volume=~"[A-Z]:"}
+            ) > 95
+          )
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Storage kritis {{ $labels.mountpoint }}{{ $labels.volume }} di {{ $labels.server_id }}"
+          description: "Disk {{ $labels.mountpoint }}{{ $labels.volume }} terpakai {{ $value | humanize }}% (standar PPT: Critical di atas 95%)."
 
       - alert: InodeHampirHabis
         expr: |
@@ -182,30 +134,27 @@ groups:
           / node_filesystem_files{fstype!~"tmpfs|overlay|squashfs|devtmpfs"}) > 90
         for: 10m
         labels:
-          severity: warning
+          severity: high
         annotations:
           summary: "Inode hampir habis di {{ $labels.server_id }}:{{ $labels.mountpoint }}"
           description: "Inode terpakai {{ $value | humanize }}%."
 
   - name: service
     rules:
-      # Service yang dipantau (expected) mati → FIRING.
-      # Saat service UP lagi (lrt_service_up==1), kondisi hilang → alert RESOLVED otomatis.
+      # Standar PPT: Service gagal 2 menit → Critical
       - alert: ServiceTidakAktif
         expr: |
           max by (instance, server_id, application, lokasi, name) (
             lrt_service_expected == 1
             and on(instance, name) lrt_service_up == 0
           )
-        for: 1m
+        for: 2m
         labels:
           severity: critical
         annotations:
           summary: "Service DOWN: {{ $labels.name }} di {{ $labels.server_id }}"
-          description: "Service {{ $labels.name }} di {{ $labels.instance }} mati. Alert hilang otomatis setelah service UP kembali."
+          description: "Service {{ $labels.name }} di {{ $labels.instance }} mati selama lebih dari 2 menit. Alert hilang otomatis setelah service UP kembali."
 
-      # Probe HTTP/TCP: hanya jika probe PERNAH sukses lalu gagal.
-      # Target yang dari awal tidak merespons (belum service / salah URL) tidak di-alert.
       - alert: ServiceDown
         expr: |
           (
@@ -233,7 +182,7 @@ groups:
           )
         for: 5m
         labels:
-          severity: warning
+          severity: high
         annotations:
           summary: "Service lambat: {{ $labels.instance }}"
           description: "Waktu respons {{ $value | humanize }}s."
@@ -244,7 +193,7 @@ groups:
         expr: sum by (instance, server_id, groupname) (rate(namedprocess_namegroup_cpu_seconds_total[5m])) * 100 > 80
         for: 5m
         labels:
-          severity: warning
+          severity: high
         annotations:
           summary: "Proses CPU abnormal: {{ $labels.groupname }}"
           description: "{{ $labels.groupname }} di {{ $labels.server_id }} memakai CPU {{ $value | humanize }}% selama 5 menit."
@@ -258,7 +207,7 @@ groups:
           ) * 100 > 35
         for: 5m
         labels:
-          severity: warning
+          severity: high
         annotations:
           summary: "Proses RAM abnormal: {{ $labels.groupname }}"
           description: "{{ $labels.groupname }} memakai {{ $value | humanize }}% RAM server."
@@ -267,7 +216,7 @@ groups:
         expr: namedprocess_namegroup_zombie_count > 0
         for: 3m
         labels:
-          severity: warning
+          severity: high
         annotations:
           summary: "Ada proses zombie di {{ $labels.server_id }}"
           description: "Group {{ $labels.groupname }} punya {{ $value }} proses zombie."
@@ -276,7 +225,7 @@ groups:
         expr: namedprocess_namegroup_num_procs > 200
         for: 10m
         labels:
-          severity: warning
+          severity: high
         annotations:
           summary: "Jumlah proses {{ $labels.groupname }} tidak wajar"
           description: "{{ $labels.groupname }} di {{ $labels.server_id }} memiliki {{ $value }} proses."
@@ -285,7 +234,7 @@ groups:
         expr: node_processes_state{state="D"} > 10
         for: 5m
         labels:
-          severity: warning
+          severity: high
         annotations:
           summary: "Banyak proses D-state di {{ $labels.server_id }}"
           description: "{{ $value }} proses uninterruptible sleep (I/O hang)."
