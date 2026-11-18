@@ -1,0 +1,8 @@
+# Probe ICMP (ping) via blackbox. IP atau hostname.
+- targets:
+    - 192.168.38.11
+  labels:
+    server_id: monitor-host
+    application: monitoring
+    lokasi: DC
+    service: icmp

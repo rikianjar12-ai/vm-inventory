@@ -14,10 +14,12 @@ echo
 echo "Di setiap VM (bukan lokasi KCI):"
 echo "  curl -fsSL http://${MONITOR_IP}:${PORT}/install-agent.sh -o /tmp/install-agent.sh"
 echo "  curl -fsSL http://${MONITOR_IP}:${PORT}/install-linux.sh -o /tmp/install-linux.sh"
+echo "  curl -fsSL http://${MONITOR_IP}:${PORT}/install-alloy.sh -o /tmp/install-alloy.sh"
 echo "  curl -fsSL http://${MONITOR_IP}:${PORT}/install-promtail.sh -o /tmp/install-promtail.sh"
 echo "  curl -fsSL http://${MONITOR_IP}:${PORT}/export-active-services.sh -o /tmp/export-active-services.sh"
 echo "  sed -i 's/\\r\$//' /tmp/install-*.sh /tmp/export-active-services.sh"
 echo "  sudo bash /tmp/install-agent.sh --monitor-ip ${MONITOR_IP} --server-id NAMA-SERVER"
+echo "  # Legacy: tambah --use-promtail jika Alloy tidak jalan"
 echo
 echo "VM yang agent-nya sudah ada (aktifkan pantauan service berjalan):"
 echo "  curl -fsSL http://${MONITOR_IP}:${PORT}/enable-service-watch.sh | sudo bash"

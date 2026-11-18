@@ -1,7 +1,9 @@
-# Saat alert pulih, Prometheus mengirim resolved; pastikan channel (Telegram/email)
-# memakai send_resolved: true — lihat notifikasi.contoh.yml
+# Dihasilkan dari template + .env. Regenerate:
+#   node scripts/render-alertmanager.mjs
+# Saat Telegram/email belum diisi, receiver kosong (alert tetap dievaluasi).
 global:
   resolve_timeout: 2m
+# smtp belum diisi
 
 route:
   receiver: default
@@ -28,4 +30,6 @@ inhibit_rules:
 
 receivers:
   - name: default
+    # Belum ada Telegram/email di .env — alert tetap dievaluasi, tanpa kirim keluar.
   - name: critical
+    # Belum ada Telegram/email di .env — alert tetap dievaluasi, tanpa kirim keluar.

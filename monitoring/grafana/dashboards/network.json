@@ -343,17 +343,146 @@
       },
       "options": {
         "mode": "markdown",
-        "content": "Suhu, fan, PSU, dan RAID belum ada sumber datanya. Tahap 3 menambahkan SNMP exporter untuk server fisik dan perangkat jaringan."
+        "content": "SNMP exporter sudah aktif di stack. Daftarkan perangkat di `prometheus/targets/snmp.yml` (lihat `snmp.yml.example`). Panel di bawah menampilkan target SNMP yang UP."
       },
       "pluginVersion": "11.2.2",
       "id": 7
+    },
+    {
+      "type": "table",
+      "title": "SNMP targets",
+      "description": "1 = UP. Isi targets/snmp.yml lalu reload Prometheus.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 21
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "up{job=\"snmp\"}",
+          "legendFormat": "",
+          "refId": "A",
+          "format": "table",
+          "instant": true
+        }
+      ],
+      "transformations": [
+        {
+          "id": "labelsToFields",
+          "options": {}
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "__name__": true,
+              "job": true
+            },
+            "renameByName": {
+              "Value": "UP",
+              "instance": "Target",
+              "server_id": "Server",
+              "application": "Aplikasi",
+              "lokasi": "Lokasi"
+            }
+          }
+        }
+      ],
+      "options": {
+        "showHeader": true
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto"
+          }
+        },
+        "overrides": []
+      },
+      "pluginVersion": "11.2.2",
+      "id": 8
+    },
+    {
+      "type": "table",
+      "title": "ICMP ping",
+      "description": "probe_success dari blackbox icmp. Isi targets/icmp.yml.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 21
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "probe_success{job=\"blackbox-icmp\"}",
+          "legendFormat": "",
+          "refId": "A",
+          "format": "table",
+          "instant": true
+        }
+      ],
+      "transformations": [
+        {
+          "id": "labelsToFields",
+          "options": {}
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "__name__": true,
+              "job": true
+            },
+            "renameByName": {
+              "Value": "OK",
+              "instance": "Target",
+              "server_id": "Server"
+            }
+          }
+        }
+      ],
+      "options": {
+        "showHeader": true
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto"
+          }
+        },
+        "overrides": []
+      },
+      "pluginVersion": "11.2.2",
+      "id": 9
     }
   ],
   "refresh": "30s",
   "schemaVersion": 39,
   "tags": [
     "lrt",
-    "jaringan"
+    "jaringan",
+    "ppt-02"
   ],
   "time": {
     "from": "now-6h",

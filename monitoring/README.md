@@ -1,8 +1,8 @@
 # Monitoring Data Center LRT Jabodebek
 
-Satu tampilan untuk seluruh server, fisik maupun VM. Halaman utama ada di aplikasi inventory (`/monitoring`) dan di Grafana. Sumber datanya Prometheus.
+Stack Observability sesuai PPT: **Grafana • Prometheus • Loki • Alloy • Alerting • Blackbox • SNMP**.
 
-Ambang alert mengikuti standar PPT Observability LRT Jabodebek:
+Ambang alert (standar PPT):
 
 | Parameter | High | Critical | Durasi |
 | --- | --- | --- | --- |
@@ -12,135 +12,158 @@ Ambang alert mengikuti standar PPT Observability LRT Jabodebek:
 | Disk | di atas 85% | di atas 95% | 5 menit |
 | Service gagal | — | mati | 2 menit |
 
-## 1. Jalankan dashboard
+Dashboard Grafana:
 
-Dari folder `monitoring`:
+1. **01 Executive Overview**
+2. **02 Infrastructure Health** (bandwidth, SNMP, ICMP)
+3. **03 Server Deep Dive**
+4. **04 Centralized Logs** (Alloy → Loki)
+5. **05 Service Availability**
+6. **06 Incident Monitoring**
 
-```powershell
-copy .env.example .env
+---
+
+## Perintah go-live (server pantauan 192.168.38.11)
+
+Jalankan di folder repo `monitoring` (Linux/PowerShell sesuai OS server).
+
+### A. Update kode & naikkan stack
+
+```bash
+cd /path/ke/vm_inventory
+git pull origin master
+cd monitoring
+cp -n .env.example .env   # sekali saja; lalu edit password + Telegram/email
 ```
 
-Isi `GRAFANA_ADMIN_PASSWORD` di `.env` dengan password yang panjang. Stack tidak mau jalan kalau password itu kosong, dan tidak ada password bawaan.
+PowerShell:
 
 ```powershell
+cd "C:\path\ke\vm_inventory"
+git pull origin master
+cd monitoring
+if (!(Test-Path .env)) { Copy-Item .env.example .env }
+```
+
+Isi minimal di `.env`:
+
+- `GRAFANA_ADMIN_PASSWORD` (wajib)
+- `TELEGRAM_BOT_TOKEN` + `TELEGRAM_CHAT_ID` (opsional tapi disarankan)
+- `ALERT_EMAIL` + `SMTP_*` (opsional)
+
+Render notifikasi lalu jalankan seluruh stack:
+
+```bash
+node scripts/render-alertmanager.mjs
 docker compose up -d
+docker compose ps
 ```
 
-| Layanan | URL | Jangkauan |
-| --- | --- | --- |
-| Overview (inventory) | http://192.168.38.11:3000/monitoring | layar ruang Data Center |
-| Grafana | http://192.168.38.11:3001 | jaringan server, user `admin`, password dari `.env` |
-| Loki | port 3100 | VM yang mengirim log |
-| Prometheus | http://127.0.0.1:9091 | hanya di server pantauan |
-| Alertmanager | http://127.0.0.1:9093 | hanya di server pantauan |
-
-Dashboard Grafana (nama mengikuti PPT):
-
-1. **01 Executive Overview** — status, availability, alert aktif
-2. **02 Infrastructure Health** — bandwidth, drop, error interface (SNMP hardware menyusul)
-3. **03 Server Deep Dive** — metrik detail per hostname
-4. **04 Centralized Logs** — syslog, login, log service
-5. **05 Service Availability** — HTTP, TCP, database
-6. **06 Incident Monitoring** — severity & histori alert
-
-Setelah mengubah `alerts.yml`, muat ulang Prometheus dan Alertmanager:
+PowerShell:
 
 ```powershell
-docker compose restart prometheus alertmanager
+node .\scripts\render-alertmanager.mjs
+docker compose up -d
+docker compose ps
 ```
 
-Overview di aplikasi inventory membaca Prometheus lewat `PROMETHEUS_URL`. Di server pantauan, container inventory ikut jaringan `lrt-monitoring_default` dan memakai `http://prometheus:9090`. Jalankan stack monitoring ini dulu, baru inventory.
+| Layanan | URL |
+| --- | --- |
+| Grafana | http://192.168.38.11:3001 |
+| Inventory overview | http://192.168.38.11:3000/monitoring |
+| Uptime Kuma | http://192.168.38.11:3002 |
+| Loki | :3100 (dari VM) |
+| Prometheus | http://127.0.0.1:9091 |
+| Alertmanager | http://127.0.0.1:9093 |
 
-## 2. Pasang agen di setiap VM
+Muat ulang setelah ubah alert/target:
 
-Satu perintah memasang metrik dan log (node_exporter, process-exporter, Promtail):
+```bash
+docker compose restart prometheus alertmanager grafana blackbox-exporter snmp-exporter
+# atau hot-reload Prometheus:
+curl -X POST http://127.0.0.1:9091/-/reload
+```
+
+### B. Layani skrip agen (port 8088)
+
+```bash
+sudo bash agents/serve-installer.sh
+```
+
+### C. Pasang agen di setiap VM Linux
 
 ```bash
 curl -fsSL http://192.168.38.11:8088/install-agent.sh -o /tmp/install-agent.sh
 curl -fsSL http://192.168.38.11:8088/install-linux.sh -o /tmp/install-linux.sh
-curl -fsSL http://192.168.38.11:8088/install-promtail.sh -o /tmp/install-promtail.sh
-sed -i 's/\r$//' /tmp/install-*.sh
+curl -fsSL http://192.168.38.11:8088/install-alloy.sh -o /tmp/install-alloy.sh
+curl -fsSL http://192.168.38.11:8088/export-active-services.sh -o /tmp/export-active-services.sh
+sed -i 's/\r$//' /tmp/*.sh
 sudo bash /tmp/install-agent.sh --monitor-ip 192.168.38.11 --server-id NAMA-SERVER --application APP --lokasi DC
 ```
 
-Server pantauan melayani skrip itu lewat `agents/serve-installer.sh` (port **8088**, hanya di IP server pantauan). Hentikan proses itu setelah agen selesai dipasang.
+Server legacy (Alloy gagal): tambah `--use-promtail`.
 
-Buka firewall dari host monitoring ke VM: port **9100** (node_exporter) dan **9256** (process_exporter). VM harus bisa mengirim log ke host monitoring port **3100** (Loki).
+Migrasi VM yang masih Promtail → Alloy:
 
-Windows Server, di PowerShell Administrator:
+```bash
+curl -fsSL http://192.168.38.11:8088/install-alloy.sh -o /tmp/install-alloy.sh
+sed -i 's/\r$//' /tmp/install-alloy.sh
+sudo bash /tmp/install-alloy.sh --monitor-ip 192.168.38.11 --server-id NAMA-SERVER
+```
+
+Windows:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\install-windows.ps1 -MonitorIp 192.168.38.11 -ServerId NAMA-SERVER
 ```
 
-Itu memasang windows_exporter di port **9182**. `windows.yml` terisi otomatis saat sync inventory menemukan OS Windows. Saat ini inventory tidak punya baris Windows, jadi file itu sengaja kosong.
+Firewall: monitoring → VM **9100** / **9256** / **9182**; VM → monitoring **3100**.
 
-## 3. Daftarkan server
+### D. Target Prometheus
 
-**Hanya daftarkan server yang agent-nya sudah terpasang.** Server tanpa agent akan tampil sebagai DOWN palsu.
-
-File target (`nodes.yml`, dll.) **lokal di server** dan diabaikan Git, supaya `git pull` tidak mengembalikan daftar lama.
-
-- `nodes.yml` — Linux
-- `process.yml` — proses (CPU/RAM/zombie)
-- `http.yml` — probe HTTP
-- `tcp.yml` — health check SSH
-- `windows.yml` — Windows (`:9182`)
-
-Lihat `prometheus/targets/README.md`. Sync inventory hanya memasukkan VM dengan `agent_installed=yes`.
-
-Jika Server DOWN muncul lagi setelah `git checkout`, jalankan:
+Salin contoh jika file lokal belum ada, lalu edit IP:
 
 ```bash
-python3 scripts/prune-down-targets.py --apply
+cp -n prometheus/targets/nodes.yml.example prometheus/targets/nodes.yml
+cp -n prometheus/targets/process.yml.example prometheus/targets/process.yml
+cp -n prometheus/targets/http.yml.example prometheus/targets/http.yml
+cp -n prometheus/targets/tcp.yml.example prometheus/targets/tcp.yml
+cp -n prometheus/targets/windows.yml.example prometheus/targets/windows.yml
+cp -n prometheus/targets/snmp.yml.example prometheus/targets/snmp.yml   # hardware/switch
+cp -n prometheus/targets/icmp.yml.example prometheus/targets/icmp.yml   # ping
 curl -X POST http://127.0.0.1:9091/-/reload
 ```
 
-Sebelum pull/checkout, backup dulu: `cp -a prometheus/targets /root/lrt-targets.bak`
+`nodes.yml` / `http.yml` / dll. diabaikan Git (lokal server). `snmp.yml` & `icmp.yml` bisa di-commit berisi `[]` kosong.
 
-### Service aktif → alert saat mati → hilang saat UP lagi
+### E. Notifikasi Telegram / email
 
-Setiap VM mengirim daftar service yang dipantau (`lrt_service_expected`) dan status saat ini (`lrt_service_up`).
-Daftar bersifat sticky: service baru yang aktif ditambahkan; yang mati tetap dipantau.
+1. Isi token di `.env`
+2. `node scripts/render-alertmanager.mjs`
+3. `docker compose restart alertmanager`
 
-Alur notifikasi (tidak dinonaktifkan):
-1. Service tadinya UP (`lrt_service_up=1`) lalu mati → alert **ServiceTidakAktif** FIRING
-2. Service UP kembali → kondisi alert hilang → status **RESOLVED**, baris notifikasi hilang otomatis
+Contoh format ada di `alertmanager/notifikasi.contoh.yml`.
 
-Agent mengekspor status setiap **1 menit**.
-
-Upgrade VM yang agent-nya sudah ada:
+### F. Agent di host Docker sendiri (opsional)
 
 ```bash
-curl -fsSL http://192.168.38.11:8088/export-active-services.sh -o /tmp/export-active-services.sh
-curl -fsSL http://192.168.38.11:8088/upgrade-service-watch.sh -o /tmp/upgrade-service-watch.sh
-sed -i 's/\r$//' /tmp/*.sh
-sudo bash /tmp/upgrade-service-watch.sh
+docker compose --profile local-agent up -d
 ```
 
-Hapus service dari pantauan (misalnya sengaja dimatikan):
+---
 
-```bash
-sudo sed -i '/^NAMA.service$/d' /var/lib/lrt-monitoring/expected-services.list
-sudo /usr/local/bin/export-active-services.sh
+## Ringkasan arsitektur
+
+```
+Linux/Windows VM → node/windows exporter + process-exporter → Prometheus
+                 → Grafana Alloy → Loki
+Blackbox (HTTP/TCP/ICMP) + SNMP exporter → Prometheus
+Prometheus + Loki → Grafana (6 dashboard)
+Prometheus → Alertmanager → Telegram / email
 ```
 
-## 4. Notifikasi
+## Catatan
 
-Alert yang sudah aktif:
-
-- Server down, CPU/RAM/disk di atas ambang warning atau kritis
-- Service systemd failed / probe HTTP-TCP gagal
-- Proses CPU > 80%, RAM proses > 35%, zombie, terlalu banyak proses, D-state
-
-Isi penerima di `alertmanager/alertmanager.yml` (contoh Telegram/email: `alertmanager/notifikasi.contoh.yml`), lalu:
-
-```powershell
-docker compose restart alertmanager
-```
-
-## 5. Inventory app
-
-Menu **Monitoring** membuka Data Center Overview. Set `GRAFANA_URL` dan `PROMETHEUS_URL` di lingkungan aplikasi. `docker-compose.inventory.yml` sudah mengarah ke Grafana `http://192.168.38.11:3001` dan Prometheus `http://prometheus:9090`.
-
-Agent host (hanya Linux yang menjalankan Docker): `docker compose --profile local-agent up -d`.
+- Hanya daftarkan server yang agent-nya sudah terpasang (hindari Server DOWN palsu).
+- Setelah ubah `alerts.yml`: `docker compose restart prometheus`
+- Backup target sebelum `git checkout`: `cp -a prometheus/targets /root/lrt-targets.bak`

@@ -75,12 +75,26 @@ services:
     image: prom/blackbox-exporter:v0.25.0
     container_name: lrt-blackbox
     restart: unless-stopped
+    # NET_RAW dibutuhkan untuk probe ICMP (ping)
+    cap_add:
+      - NET_RAW
     ports:
       - "127.0.0.1:9115:9115"
     volumes:
       - ./blackbox/blackbox.yml:/etc/blackbox_exporter/config.yml:ro
     command:
       - --config.file=/etc/blackbox_exporter/config.yml
+
+  snmp-exporter:
+    image: prom/snmp-exporter:v0.26.0
+    container_name: lrt-snmp
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:9116:9116"
+    volumes:
+      - ./snmp/snmp.yml:/etc/snmp_exporter/snmp.yml:ro
+    command:
+      - --config.file=/etc/snmp_exporter/snmp.yml
 
   node-exporter:
     image: prom/node-exporter:v1.8.2

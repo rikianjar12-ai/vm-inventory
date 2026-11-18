@@ -1,0 +1,35 @@
+# Template Alertmanager. Diisi dari .env lewat:
+#   powershell -File scripts/render-alertmanager.ps1
+#   atau: bash scripts/render-alertmanager.sh
+global:
+  resolve_timeout: 2m
+__SMTP_GLOBAL__
+
+route:
+  receiver: default
+  group_by: ["alertname", "server_id"]
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 4h
+  routes:
+    - matchers:
+        - severity="critical"
+      receiver: critical
+      repeat_interval: 1h
+    - matchers:
+        - severity="high"
+      receiver: default
+      repeat_interval: 2h
+
+inhibit_rules:
+  - source_matchers:
+      - alertname="ServerDown"
+    target_matchers:
+      - severity=~"high|warning|critical"
+    equal: ["instance"]
+
+receivers:
+  - name: default
+__NOTIFY_DEFAULT__
+  - name: critical
+__NOTIFY_CRITICAL__

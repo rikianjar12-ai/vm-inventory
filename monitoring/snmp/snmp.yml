@@ -1,0 +1,24 @@
+# Modul SNMP exporter (default IF-MIB + host resources ringkas).
+# Isi community/v3 di targets/snmp.yml per perangkat.
+auths:
+  public_v2:
+    community: public
+    version: 2
+
+modules:
+  if_mib:
+    walk:
+      - 1.3.6.1.2.1.2
+      - 1.3.6.1.2.1.31.1.1
+    lookups:
+      - source_indexes: [ifIndex]
+        lookup: ifAlias
+        drop_source_indexes: false
+      - source_indexes: [ifIndex]
+        lookup: ifDescr
+        drop_source_indexes: false
+  host_resources:
+    walk:
+      - 1.3.6.1.2.1.25.1
+      - 1.3.6.1.2.1.25.2.3
+      - 1.3.6.1.2.1.25.3.3

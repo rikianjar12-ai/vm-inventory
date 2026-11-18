@@ -1,0 +1,20 @@
+// Contoh config Alloy di VM. install-alloy.sh menulis file final di /etc/alloy/config.alloy
+logging {
+  level  = "info"
+  format = "logfmt"
+}
+
+loki.write "default" {
+  endpoint {
+    url = "http://192.168.38.11:3100/loki/api/v1/push"
+  }
+}
+
+loki.source.journal "systemd" {
+  max_age    = "24h"
+  forward_to = [loki.write.default.receiver]
+  labels     = {
+    job       = "systemd",
+    server_id = "NAMA-SERVER",
+  }
+}

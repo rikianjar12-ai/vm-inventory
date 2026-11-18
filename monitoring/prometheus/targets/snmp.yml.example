@@ -1,0 +1,10 @@
+# Target SNMP hardware / switch. Ganti IP dan labels.
+# Auth & module harus cocok dengan snmp/snmp.yml (public_v2, if_mib | host_resources).
+- targets:
+    - 192.168.1.1
+  labels:
+    server_id: sw-core-01
+    application: network
+    lokasi: DC
+    module: if_mib
+    auth: public_v2

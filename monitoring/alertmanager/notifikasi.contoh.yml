@@ -1,17 +1,13 @@
-# Salin blok ini ke receivers di alertmanager.yml setelah token siap.
+# Contoh isi .env lalu jalankan:
+#   node scripts/render-alertmanager.mjs
+#   docker compose restart alertmanager
 #
-#   telegram_configs:
-#     - bot_token: "123:ABC"
-#       chat_id: 123456789
-#       parse_mode: HTML
-#       send_resolved: true
-#       message: |
-#         <b>{{ .Status | toUpper }}</b> {{ .CommonLabels.alertname }}
-#         Server: {{ .CommonLabels.server_id }}
-#         {{ range .Alerts }}{{ .Annotations.summary }}{{ end }}
+# TELEGRAM_BOT_TOKEN=123456:ABC-DEF
+# TELEGRAM_CHAT_ID=-1001234567890
+# ALERT_EMAIL=ops@lrtjabodebek.co.id
+# SMTP_HOST=smtp.example.com:587
+# SMTP_FROM=alert@lrtjabodebek.co.id
+# SMTP_USER=alert@lrtjabodebek.co.id
+# SMTP_PASSWORD=rahasia
 #
-# Email:
-#   email_configs:
-#     - to: "ops@example.com"
-#       send_resolved: true
-# Dan set global.smtp_smarthost / smtp_from.
+# Hasil render masuk ke receivers default & critical di alertmanager.yml

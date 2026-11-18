@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# LEGACY: Promtail. Prefer Grafana Alloy (install-alloy.sh / install-agent.sh tanpa --use-promtail).
 # Pasang Promtail di VM yang dipantau. Mengirim syslog, login (auth), dan service (journal) ke Loki.
 #   sudo bash install-promtail.sh --monitor-ip 192.168.38.11 --server-id NAMA-SERVER
 set -eu
