@@ -95,7 +95,7 @@
           },
           "editorMode": "code",
           "expr": "(time() - node_boot_time_seconds{server_id=~\"$server\"}) or (time() - windows_system_system_up_time{server_id=~\"$server\"})",
-          "legendFormat": "",
+          "legendFormat": "Uptime",
           "refId": "A",
           "instant": true,
           "format": "time_series"
@@ -103,6 +103,7 @@
       ],
       "fieldConfig": {
         "defaults": {
+          "displayName": "Uptime",
           "color": {
             "mode": "fixed",
             "fixedColor": "text"
@@ -133,7 +134,7 @@
           "fields": "",
           "values": false
         },
-        "textMode": "value_and_name"
+        "textMode": "value"
       },
       "pluginVersion": "11.2.2",
       "id": 2
@@ -159,7 +160,7 @@
           },
           "editorMode": "code",
           "expr": "max by (instance, server_id, application, lokasi) ((100 * (1 - avg by (instance, server_id, application, lokasi) (rate(node_cpu_seconds_total{mode=\"idle\",server_id=~\"$server\"}[5m])))) or (100 * (1 - avg by (instance, server_id, application, lokasi) (rate(windows_cpu_time_total{mode=\"idle\",server_id=~\"$server\"}[5m])))))",
-          "legendFormat": "",
+          "legendFormat": "CPU",
           "refId": "A",
           "instant": true,
           "format": "time_series"
@@ -167,6 +168,7 @@
       ],
       "fieldConfig": {
         "defaults": {
+          "displayName": "CPU",
           "color": {
             "mode": "fixed",
             "fixedColor": "blue"
@@ -197,7 +199,7 @@
           "fields": "",
           "values": false
         },
-        "textMode": "value_and_name"
+        "textMode": "value"
       },
       "pluginVersion": "11.2.2",
       "id": 3
@@ -223,7 +225,7 @@
           },
           "editorMode": "code",
           "expr": "max by (instance, server_id, application, lokasi) ((100 * (1 - node_memory_MemAvailable_bytes{server_id=~\"$server\"} / node_memory_MemTotal_bytes{server_id=~\"$server\"})) or (100 * (1 - windows_memory_available_bytes{server_id=~\"$server\"} / windows_cs_physical_memory_bytes{server_id=~\"$server\"})))",
-          "legendFormat": "",
+          "legendFormat": "RAM",
           "refId": "A",
           "instant": true,
           "format": "time_series"
@@ -231,6 +233,7 @@
       ],
       "fieldConfig": {
         "defaults": {
+          "displayName": "RAM",
           "color": {
             "mode": "fixed",
             "fixedColor": "purple"
@@ -261,7 +264,7 @@
           "fields": "",
           "values": false
         },
-        "textMode": "value_and_name"
+        "textMode": "value"
       },
       "pluginVersion": "11.2.2",
       "id": 4
@@ -287,7 +290,7 @@
           },
           "editorMode": "code",
           "expr": "(node_memory_SwapTotal_bytes{server_id=~\"$server\"} > 0) * (100 * (1 - node_memory_SwapFree_bytes{server_id=~\"$server\"} / node_memory_SwapTotal_bytes{server_id=~\"$server\"}))",
-          "legendFormat": "",
+          "legendFormat": "Swap",
           "refId": "A",
           "instant": true,
           "format": "time_series"
@@ -295,6 +298,7 @@
       ],
       "fieldConfig": {
         "defaults": {
+          "displayName": "Swap",
           "color": {
             "mode": "fixed",
             "fixedColor": "orange"
@@ -325,7 +329,7 @@
           "fields": "",
           "values": false
         },
-        "textMode": "value_and_name"
+        "textMode": "value"
       },
       "pluginVersion": "11.2.2",
       "id": 5
@@ -351,7 +355,7 @@
           },
           "editorMode": "code",
           "expr": "node_load1{server_id=~\"$server\"}",
-          "legendFormat": "",
+          "legendFormat": "Load 1m",
           "refId": "A",
           "instant": true,
           "format": "time_series"
@@ -359,6 +363,7 @@
       ],
       "fieldConfig": {
         "defaults": {
+          "displayName": "Load 1m",
           "color": {
             "mode": "fixed",
             "fixedColor": "text"
@@ -389,7 +394,7 @@
           "fields": "",
           "values": false
         },
-        "textMode": "value_and_name"
+        "textMode": "value"
       },
       "pluginVersion": "11.2.2",
       "id": 6
@@ -415,7 +420,7 @@
           },
           "editorMode": "code",
           "expr": "max by (instance, server_id, application, lokasi) ((100 - (100 * node_filesystem_avail_bytes{fstype!~\"tmpfs|overlay|squashfs|devtmpfs\",mountpoint!~\"/boot|/boot/efi\",server_id=~\"$server\"} / node_filesystem_size_bytes{fstype!~\"tmpfs|overlay|squashfs|devtmpfs\",mountpoint!~\"/boot|/boot/efi\",server_id=~\"$server\"})) or (100 - (100 * windows_logical_disk_free_bytes{volume=~\"[A-Z]:\",server_id=~\"$server\"} / windows_logical_disk_size_bytes{volume=~\"[A-Z]:\",server_id=~\"$server\"})))",
-          "legendFormat": "",
+          "legendFormat": "Disk tersibuk",
           "refId": "A",
           "instant": true,
           "format": "time_series"
@@ -423,6 +428,7 @@
       ],
       "fieldConfig": {
         "defaults": {
+          "displayName": "Disk tersibuk",
           "color": {
             "mode": "fixed",
             "fixedColor": "yellow"
@@ -453,7 +459,7 @@
           "fields": "",
           "values": false
         },
-        "textMode": "value_and_name"
+        "textMode": "value"
       },
       "pluginVersion": "11.2.2",
       "id": 7

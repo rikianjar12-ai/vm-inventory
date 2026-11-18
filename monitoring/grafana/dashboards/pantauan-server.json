@@ -95,7 +95,7 @@
           },
           "editorMode": "code",
           "expr": "count(up{job=~\"node|windows\"}) or vector(0)",
-          "legendFormat": "",
+          "legendFormat": "Total Server",
           "refId": "A",
           "instant": true,
           "format": "time_series"
@@ -103,6 +103,7 @@
       ],
       "fieldConfig": {
         "defaults": {
+          "displayName": "Total Server",
           "color": {
             "mode": "fixed",
             "fixedColor": "text"
@@ -133,7 +134,7 @@
           "fields": "",
           "values": false
         },
-        "textMode": "value_and_name"
+        "textMode": "value"
       },
       "pluginVersion": "11.2.2",
       "id": 2
@@ -159,7 +160,7 @@
           },
           "editorMode": "code",
           "expr": "count(up{job=~\"node|windows\"} == 1) or vector(0)",
-          "legendFormat": "",
+          "legendFormat": "Online",
           "refId": "A",
           "instant": true,
           "format": "time_series"
@@ -167,6 +168,7 @@
       ],
       "fieldConfig": {
         "defaults": {
+          "displayName": "Online",
           "color": {
             "mode": "fixed",
             "fixedColor": "green"
@@ -197,7 +199,7 @@
           "fields": "",
           "values": false
         },
-        "textMode": "value_and_name"
+        "textMode": "value"
       },
       "pluginVersion": "11.2.2",
       "id": 3
@@ -223,7 +225,7 @@
           },
           "editorMode": "code",
           "expr": "count(up{job=~\"node|windows\"} == 0) or vector(0)",
-          "legendFormat": "",
+          "legendFormat": "Offline",
           "refId": "A",
           "instant": true,
           "format": "time_series"
@@ -231,6 +233,7 @@
       ],
       "fieldConfig": {
         "defaults": {
+          "displayName": "Offline",
           "color": {
             "mode": "fixed",
             "fixedColor": "red"
@@ -261,7 +264,7 @@
           "fields": "",
           "values": false
         },
-        "textMode": "value_and_name"
+        "textMode": "value"
       },
       "pluginVersion": "11.2.2",
       "id": 4
@@ -287,7 +290,7 @@
           },
           "editorMode": "code",
           "expr": " (   count(     (       (max by (instance) (100 * (1 - avg by (instance) (rate(node_cpu_seconds_total{mode=\"idle\",job=\"node\"}[5m]))) > 70))       or       (max by (instance) (100 * (1 - node_memory_MemAvailable_bytes{job=\"node\"} / node_memory_MemTotal_bytes{job=\"node\"}) > 75))       or       (max by (instance) (100 - (100 * node_filesystem_avail_bytes{job=\"node\",fstype!~\"tmpfs|overlay|squashfs|devtmpfs\",mountpoint!~\"/boot|/boot/efi\"} / node_filesystem_size_bytes{job=\"node\",fstype!~\"tmpfs|overlay|squashfs|devtmpfs\",mountpoint!~\"/boot|/boot/efi\"}) > 75))     )     and on (instance) (up{job=\"node\"} == 1)   )   or vector(0) ) + (   count(     (       (max by (instance) (100 * (1 - avg by (instance) (rate(windows_cpu_time_total{mode=\"idle\",job=\"windows\"}[5m]))) > 70))       or       (max by (instance) (100 * (1 - windows_memory_available_bytes{job=\"windows\"} / windows_cs_physical_memory_bytes{job=\"windows\"}) > 75))       or       (max by (instance) (100 - (100 * windows_logical_disk_free_bytes{job=\"windows\",volume=~\"[A-Z]:\"} / windows_logical_disk_size_bytes{job=\"windows\",volume=~\"[A-Z]:\"}) > 75))     )     and on (instance) (up{job=\"windows\"} == 1)   )   or vector(0) ) ",
-          "legendFormat": "",
+          "legendFormat": "Warning",
           "refId": "A",
           "instant": true,
           "format": "time_series"
@@ -295,6 +298,7 @@
       ],
       "fieldConfig": {
         "defaults": {
+          "displayName": "Warning",
           "color": {
             "mode": "fixed",
             "fixedColor": "yellow"
@@ -325,7 +329,7 @@
           "fields": "",
           "values": false
         },
-        "textMode": "value_and_name"
+        "textMode": "value"
       },
       "pluginVersion": "11.2.2",
       "id": 5

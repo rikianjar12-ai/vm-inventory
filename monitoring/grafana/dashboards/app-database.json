@@ -95,7 +95,7 @@
           },
           "editorMode": "code",
           "expr": "count(lrt_service_up == 1) or vector(0)",
-          "legendFormat": "",
+          "legendFormat": "Service UP",
           "refId": "A",
           "instant": true,
           "format": "time_series"
@@ -103,6 +103,7 @@
       ],
       "fieldConfig": {
         "defaults": {
+          "displayName": "Service UP",
           "color": {
             "mode": "fixed",
             "fixedColor": "green"
@@ -133,7 +134,7 @@
           "fields": "",
           "values": false
         },
-        "textMode": "value_and_name"
+        "textMode": "value"
       },
       "pluginVersion": "11.2.2",
       "id": 2
@@ -159,7 +160,7 @@
           },
           "editorMode": "code",
           "expr": "count((lrt_service_expected == 1) and on(instance, name) (lrt_service_up == 0)) or vector(0)",
-          "legendFormat": "",
+          "legendFormat": "Service DOWN",
           "refId": "A",
           "instant": true,
           "format": "time_series"
@@ -167,6 +168,7 @@
       ],
       "fieldConfig": {
         "defaults": {
+          "displayName": "Service DOWN",
           "color": {
             "mode": "fixed",
             "fixedColor": "red"
@@ -197,7 +199,7 @@
           "fields": "",
           "values": false
         },
-        "textMode": "value_and_name"
+        "textMode": "value"
       },
       "pluginVersion": "11.2.2",
       "id": 3
@@ -223,7 +225,7 @@
           },
           "editorMode": "code",
           "expr": "count(probe_success == 1) or vector(0)",
-          "legendFormat": "",
+          "legendFormat": "Probe OK",
           "refId": "A",
           "instant": true,
           "format": "time_series"
@@ -231,6 +233,7 @@
       ],
       "fieldConfig": {
         "defaults": {
+          "displayName": "Probe OK",
           "color": {
             "mode": "fixed",
             "fixedColor": "green"
@@ -261,7 +264,7 @@
           "fields": "",
           "values": false
         },
-        "textMode": "value_and_name"
+        "textMode": "value"
       },
       "pluginVersion": "11.2.2",
       "id": 4
@@ -287,7 +290,7 @@
           },
           "editorMode": "code",
           "expr": "count(probe_success == 0) or vector(0)",
-          "legendFormat": "",
+          "legendFormat": "Probe gagal",
           "refId": "A",
           "instant": true,
           "format": "time_series"
@@ -295,6 +298,7 @@
       ],
       "fieldConfig": {
         "defaults": {
+          "displayName": "Probe gagal",
           "color": {
             "mode": "fixed",
             "fixedColor": "red"
@@ -325,7 +329,7 @@
           "fields": "",
           "values": false
         },
-        "textMode": "value_and_name"
+        "textMode": "value"
       },
       "pluginVersion": "11.2.2",
       "id": 5
@@ -627,7 +631,7 @@
           },
           "editorMode": "code",
           "expr": "sum(pg_stat_activity_count) or sum(pg_stat_database_numbackends) or vector(0)",
-          "legendFormat": "",
+          "legendFormat": "Koneksi",
           "refId": "A",
           "instant": true,
           "format": "time_series"
@@ -635,6 +639,7 @@
       ],
       "fieldConfig": {
         "defaults": {
+          "displayName": "Koneksi",
           "color": {
             "mode": "fixed",
             "fixedColor": "text"
@@ -665,7 +670,7 @@
           "fields": "",
           "values": false
         },
-        "textMode": "value_and_name"
+        "textMode": "value"
       },
       "pluginVersion": "11.2.2",
       "id": 11

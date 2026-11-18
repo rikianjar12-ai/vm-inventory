@@ -95,7 +95,7 @@
           },
           "editorMode": "code",
           "expr": "count(ALERTS{alertstate=\"firing\",severity=\"critical\"}) or vector(0)",
-          "legendFormat": "",
+          "legendFormat": "Critical",
           "refId": "A",
           "instant": true,
           "format": "time_series"
@@ -103,6 +103,7 @@
       ],
       "fieldConfig": {
         "defaults": {
+          "displayName": "Critical",
           "color": {
             "mode": "fixed",
             "fixedColor": "red"
@@ -133,7 +134,7 @@
           "fields": "",
           "values": false
         },
-        "textMode": "value_and_name"
+        "textMode": "value"
       },
       "pluginVersion": "11.2.2",
       "id": 2
@@ -159,7 +160,7 @@
           },
           "editorMode": "code",
           "expr": "count(ALERTS{alertstate=\"firing\",severity=\"warning\"}) or vector(0)",
-          "legendFormat": "",
+          "legendFormat": "Warning",
           "refId": "A",
           "instant": true,
           "format": "time_series"
@@ -167,6 +168,7 @@
       ],
       "fieldConfig": {
         "defaults": {
+          "displayName": "Warning",
           "color": {
             "mode": "fixed",
             "fixedColor": "yellow"
@@ -197,7 +199,7 @@
           "fields": "",
           "values": false
         },
-        "textMode": "value_and_name"
+        "textMode": "value"
       },
       "pluginVersion": "11.2.2",
       "id": 3
@@ -223,7 +225,7 @@
           },
           "editorMode": "code",
           "expr": "count(ALERTS{alertstate=\"pending\"}) or vector(0)",
-          "legendFormat": "",
+          "legendFormat": "Pending",
           "refId": "A",
           "instant": true,
           "format": "time_series"
@@ -231,6 +233,7 @@
       ],
       "fieldConfig": {
         "defaults": {
+          "displayName": "Pending",
           "color": {
             "mode": "fixed",
             "fixedColor": "text"
@@ -261,7 +264,7 @@
           "fields": "",
           "values": false
         },
-        "textMode": "value_and_name"
+        "textMode": "value"
       },
       "pluginVersion": "11.2.2",
       "id": 4

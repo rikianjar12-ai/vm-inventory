@@ -81,9 +81,10 @@ def stat(title, expr, x, y, w, h, color, unit="short"):
         "title": title,
         "datasource": DS,
         "gridPos": {"h": h, "w": w, "x": x, "y": y},
-        "targets": [target(expr, instant=True)],
+        "targets": [target(expr, legend=title, instant=True)],
         "fieldConfig": {
             "defaults": {
+                "displayName": title,
                 "color": {"mode": "fixed", "fixedColor": color},
                 "mappings": [],
                 "thresholds": {"mode": "absolute", "steps": [{"color": color, "value": None}]},
@@ -97,7 +98,7 @@ def stat(title, expr, x, y, w, h, color, unit="short"):
             "justifyMode": "center",
             "orientation": "auto",
             "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": False},
-            "textMode": "value_and_name",
+            "textMode": "value",
         },
         "pluginVersion": "11.2.2",
     }
