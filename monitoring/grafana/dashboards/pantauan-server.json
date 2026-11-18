@@ -1,21 +1,8 @@
 {
   "annotations": {
-    "list": [
-      {
-        "builtIn": 1,
-        "datasource": {
-          "type": "grafana",
-          "uid": "-- Grafana --"
-        },
-        "enable": true,
-        "hide": true,
-        "iconColor": "rgba(0, 211, 255, 1)",
-        "name": "Annotations & Alerts",
-        "type": "dashboard"
-      }
-    ]
+    "list": []
   },
-  "description": "Pantauan kesehatan server, service, RAM, storage, dan proses abnormal LRT Jabodebek.",
+  "description": "Halaman utama ruang Data Center: total server, online/offline, warning, rata-rata CPU/RAM, dan kesehatan tiap server.",
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
@@ -23,12 +10,51 @@
   "links": [
     {
       "asDropdown": false,
-      "icon": "doc",
+      "icon": "dashboard",
       "includeVars": true,
       "keepTime": true,
       "targetBlank": false,
-      "title": "Log server",
-      "tooltip": "Syslog, login, dan log service",
+      "title": "Server Detail",
+      "type": "link",
+      "url": "/d/lrt-server-detail/server-detail"
+    },
+    {
+      "asDropdown": false,
+      "icon": "dashboard",
+      "includeVars": true,
+      "keepTime": true,
+      "targetBlank": false,
+      "title": "Aplikasi & Database",
+      "type": "link",
+      "url": "/d/lrt-app-db/aplikasi-database"
+    },
+    {
+      "asDropdown": false,
+      "icon": "dashboard",
+      "includeVars": true,
+      "keepTime": true,
+      "targetBlank": false,
+      "title": "Jaringan",
+      "type": "link",
+      "url": "/d/lrt-network/jaringan"
+    },
+    {
+      "asDropdown": false,
+      "icon": "dashboard",
+      "includeVars": true,
+      "keepTime": true,
+      "targetBlank": false,
+      "title": "Alert",
+      "type": "link",
+      "url": "/d/lrt-alerts/alert-insiden"
+    },
+    {
+      "asDropdown": false,
+      "icon": "dashboard",
+      "includeVars": true,
+      "keepTime": true,
+      "targetBlank": false,
+      "title": "Log",
       "type": "link",
       "url": "/d/lrt-server-logs/log-server"
     }
@@ -36,6 +62,8 @@
   "liveNow": true,
   "panels": [
     {
+      "type": "row",
+      "title": "Ringkasan",
       "collapsed": false,
       "gridPos": {
         "h": 1,
@@ -43,60 +71,22 @@
         "x": 0,
         "y": 0
       },
-      "id": 100,
-      "title": "Kesehatan server",
-      "type": "row"
+      "panels": [],
+      "id": 1
     },
     {
+      "type": "stat",
+      "title": "Total Server",
       "datasource": {
         "type": "prometheus",
         "uid": "prometheus"
       },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "green",
-            "mode": "fixed"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": []
-      },
       "gridPos": {
         "h": 4,
-        "w": 4,
+        "w": 6,
         "x": 0,
         "y": 1
       },
-      "id": 1,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "value_and_name",
-        "wideLayout": true
-      },
-      "pluginVersion": "11.2.2",
       "targets": [
         {
           "datasource": {
@@ -104,24 +94,82 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "count(up{job=~\"node|windows\", server_id=~\"$server\"} == 1) or vector(0)",
+          "expr": "count(up{job=~\"node|windows\"}) or vector(0)",
+          "legendFormat": "",
+          "refId": "A",
           "instant": true,
-          "legendFormat": "UP",
-          "refId": "A"
+          "format": "time_series"
         }
       ],
-      "title": "Server UP",
-      "type": "stat"
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "text"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "text",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value_and_name"
+      },
+      "pluginVersion": "11.2.2",
+      "id": 2
     },
     {
+      "type": "stat",
+      "title": "Online",
       "datasource": {
         "type": "prometheus",
         "uid": "prometheus"
       },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 6,
+        "y": 1
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "count(up{job=~\"node|windows\"} == 1) or vector(0)",
+          "legendFormat": "",
+          "refId": "A",
+          "instant": true,
+          "format": "time_series"
+        }
+      ],
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "fixed",
+            "fixedColor": "green"
           },
           "mappings": [],
           "thresholds": {
@@ -130,10 +178,6 @@
               {
                 "color": "green",
                 "value": null
-              },
-              {
-                "color": "red",
-                "value": 1
               }
             ]
           },
@@ -141,19 +185,11 @@
         },
         "overrides": []
       },
-      "gridPos": {
-        "h": 4,
-        "w": 4,
-        "x": 4,
-        "y": 1
-      },
-      "id": 2,
       "options": {
-        "colorMode": "background",
+        "colorMode": "value",
         "graphMode": "none",
         "justifyMode": "center",
         "orientation": "auto",
-        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -161,181 +197,51 @@
           "fields": "",
           "values": false
         },
-        "showPercentChange": false,
-        "textMode": "value_and_name",
-        "wideLayout": true
+        "textMode": "value_and_name"
       },
       "pluginVersion": "11.2.2",
-      "targets": [
-        {
-          "expr": "count(up{job=~\"node|windows\", server_id=~\"$server\"} == 0) or vector(0)",
-          "instant": true,
-          "legendFormat": "DOWN",
-          "refId": "A"
-        }
-      ],
-      "title": "Server DOWN",
+      "id": 3
+    },
+    {
       "type": "stat",
-      "description": "Target di nodes/windows yang tidak merespons. Jika agent belum terpasang, keluarkan dengan prune-down-targets.py."
-    },
-    {
+      "title": "Offline",
       "datasource": {
         "type": "prometheus",
         "uid": "prometheus"
       },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "yellow",
-                "value": 70
-              },
-              {
-                "color": "red",
-                "value": 85
-              }
-            ]
-          },
-          "unit": "percent",
-          "max": 100,
-          "min": 0
-        },
-        "overrides": []
-      },
       "gridPos": {
         "h": 4,
-        "w": 4,
-        "x": 8,
-        "y": 1
-      },
-      "id": 3,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "11.2.2",
-      "targets": [
-        {
-          "expr": "avg((100 * (1 - node_memory_MemAvailable_bytes{server_id=~\"$server\"} / node_memory_MemTotal_bytes{server_id=~\"$server\"})) or (100 * (1 - windows_memory_available_bytes{server_id=~\"$server\"} / windows_cs_physical_memory_bytes{server_id=~\"$server\"})))",
-          "instant": true,
-          "legendFormat": "RAM",
-          "refId": "A"
-        }
-      ],
-      "title": "Rata-rata RAM",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "max": 100,
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "yellow",
-                "value": 70
-              },
-              {
-                "color": "red",
-                "value": 85
-              }
-            ]
-          },
-          "unit": "percent"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 4,
+        "w": 6,
         "x": 12,
         "y": 1
       },
-      "id": 4,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "11.2.2",
       "targets": [
         {
-          "expr": "avg((100 - (100 * node_filesystem_avail_bytes{fstype!~\"tmpfs|overlay|squashfs|devtmpfs\", mountpoint=~\"/|/data|/home\", server_id=~\"$server\"} / node_filesystem_size_bytes{fstype!~\"tmpfs|overlay|squashfs|devtmpfs\", mountpoint=~\"/|/data|/home\", server_id=~\"$server\"})) or (100 - (100 * windows_logical_disk_free_bytes{volume=~\"[A-Z]:\", server_id=~\"$server\"} / windows_logical_disk_size_bytes{volume=~\"[A-Z]:\", server_id=~\"$server\"})))",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "count(up{job=~\"node|windows\"} == 0) or vector(0)",
+          "legendFormat": "",
+          "refId": "A",
           "instant": true,
-          "legendFormat": "Disk",
-          "refId": "A"
+          "format": "time_series"
         }
       ],
-      "title": "Rata-rata storage",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "fixed",
+            "fixedColor": "red"
           },
+          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
               {
                 "color": "red",
-                "value": 1
+                "value": null
               }
             ]
           },
@@ -343,19 +249,11 @@
         },
         "overrides": []
       },
-      "gridPos": {
-        "h": 4,
-        "w": 4,
-        "x": 16,
-        "y": 1
-      },
-      "id": 5,
       "options": {
-        "colorMode": "background",
+        "colorMode": "value",
         "graphMode": "none",
         "justifyMode": "center",
         "orientation": "auto",
-        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -363,377 +261,289 @@
           "fields": "",
           "values": false
         },
-        "showPercentChange": false,
-        "textMode": "value_and_name",
-        "wideLayout": true
+        "textMode": "value_and_name"
       },
       "pluginVersion": "11.2.2",
-      "targets": [
-        {
-          "expr": "count(max by (server_id, name, instance) (lrt_service_expected{server_id=~\"$server\"} == 1 and on(server_id, name, instance) lrt_service_up{server_id=~\"$server\"} == 0)) or vector(0)",
-          "instant": true,
-          "legendFormat": "DOWN",
-          "refId": "A"
-        }
-      ],
-      "title": "Service DOWN",
+      "id": 4
+    },
+    {
       "type": "stat",
-      "description": "Jumlah service pantauan yang mati. Saat service UP lagi, angka turun dan alert hilang otomatis."
-    },
-    {
+      "title": "Warning",
       "datasource": {
         "type": "prometheus",
         "uid": "prometheus"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "orange",
-                "value": 1
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": []
       },
       "gridPos": {
         "h": 4,
-        "w": 4,
-        "x": 20,
+        "w": 6,
+        "x": 18,
         "y": 1
       },
-      "id": 6,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "value_and_name",
-        "wideLayout": true
-      },
-      "pluginVersion": "11.2.2",
       "targets": [
         {
-          "expr": "sum(namedprocess_namegroup_zombie_count{server_id=~\"$server\"}) or vector(0)",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": " (   count(     (       (max by (instance) (100 * (1 - avg by (instance) (rate(node_cpu_seconds_total{mode=\"idle\",job=\"node\"}[5m]))) > 70))       or       (max by (instance) (100 * (1 - node_memory_MemAvailable_bytes{job=\"node\"} / node_memory_MemTotal_bytes{job=\"node\"}) > 75))       or       (max by (instance) (100 - (100 * node_filesystem_avail_bytes{job=\"node\",fstype!~\"tmpfs|overlay|squashfs|devtmpfs\",mountpoint!~\"/boot|/boot/efi\"} / node_filesystem_size_bytes{job=\"node\",fstype!~\"tmpfs|overlay|squashfs|devtmpfs\",mountpoint!~\"/boot|/boot/efi\"}) > 75))     )     and on (instance) (up{job=\"node\"} == 1)   )   or vector(0) ) + (   count(     (       (max by (instance) (100 * (1 - avg by (instance) (rate(windows_cpu_time_total{mode=\"idle\",job=\"windows\"}[5m]))) > 70))       or       (max by (instance) (100 * (1 - windows_memory_available_bytes{job=\"windows\"} / windows_cs_physical_memory_bytes{job=\"windows\"}) > 75))       or       (max by (instance) (100 - (100 * windows_logical_disk_free_bytes{job=\"windows\",volume=~\"[A-Z]:\"} / windows_logical_disk_size_bytes{job=\"windows\",volume=~\"[A-Z]:\"}) > 75))     )     and on (instance) (up{job=\"windows\"} == 1)   )   or vector(0) ) ",
+          "legendFormat": "",
+          "refId": "A",
           "instant": true,
-          "legendFormat": "Zombie",
-          "refId": "A"
+          "format": "time_series"
         }
       ],
-      "title": "Proses zombie",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "fixed",
+            "fixedColor": "yellow"
           },
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "inspect": false
-          },
+          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
               {
                 "color": "yellow",
-                "value": 70
-              },
-              {
-                "color": "red",
-                "value": 85
+                "value": null
               }
             ]
-          }
+          },
+          "unit": "short"
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/^(server_id|Server)$/"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 340
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/^(application|Aplikasi)$/"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 260
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/^(lokasi|Lokasi)$/"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 90
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/^(instance|Instance)$/"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 190
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Value #A"
-            },
-            "properties": [
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "mode": "basic",
-                  "type": "color-background"
-                }
-              },
-              {
-                "id": "custom.width",
-                "value": 110
-              },
-              {
-                "id": "custom.align",
-                "value": "center"
-              },
-              {
-                "id": "displayName",
-                "value": "Status"
-              },
-              {
-                "id": "mappings",
-                "value": [
-                  {
-                    "options": {
-                      "0": {
-                        "color": "red",
-                        "index": 0,
-                        "text": "DOWN"
-                      },
-                      "1": {
-                        "color": "green",
-                        "index": 1,
-                        "text": "UP"
-                      }
-                    },
-                    "type": "value"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Value #B"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "percent"
-              },
-              {
-                "id": "displayName",
-                "value": "RAM %"
-              },
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "mode": "gradient",
-                  "type": "gauge"
-                }
-              },
-              {
-                "id": "custom.width",
-                "value": 150
-              },
-              {
-                "id": "max",
-                "value": 100
-              },
-              {
-                "id": "min",
-                "value": 0
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Value #C"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "percent"
-              },
-              {
-                "id": "displayName",
-                "value": "CPU %"
-              },
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "mode": "gradient",
-                  "type": "gauge"
-                }
-              },
-              {
-                "id": "custom.width",
-                "value": 150
-              },
-              {
-                "id": "max",
-                "value": 100
-              },
-              {
-                "id": "min",
-                "value": 0
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Value #D"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "percent"
-              },
-              {
-                "id": "displayName",
-                "value": "Disk %"
-              },
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "mode": "gradient",
-                  "type": "gauge"
-                }
-              },
-              {
-                "id": "custom.width",
-                "value": 150
-              },
-              {
-                "id": "max",
-                "value": 100
-              },
-              {
-                "id": "min",
-                "value": 0
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value_and_name"
+      },
+      "pluginVersion": "11.2.2",
+      "id": 5
+    },
+    {
+      "type": "row",
+      "title": "Utilisasi",
+      "collapsed": false,
       "gridPos": {
-        "h": 9,
-        "w": 12,
+        "h": 1,
+        "w": 24,
         "x": 0,
         "y": 5
       },
-      "id": 7,
-      "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
-        "showHeader": true,
-        "sortBy": [
-          {
-            "desc": true,
-            "displayName": "RAM %"
-          }
-        ]
+      "panels": [],
+      "id": 6
+    },
+    {
+      "type": "timeseries",
+      "title": "CPU Utilization",
+      "description": "",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
       },
-      "pluginVersion": "11.2.2",
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 6
+      },
       "targets": [
         {
-          "expr": "up{job=~\"node|windows\", server_id=~\"$server\"} == 1",
-          "format": "table",
-          "instant": true,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "avg((100 * (1 - avg by (instance) (rate(node_cpu_seconds_total{mode=\"idle\",job=\"node\"}[5m])))) or (100 * (1 - avg by (instance) (rate(windows_cpu_time_total{mode=\"idle\",job=\"windows\"}[5m])))))",
+          "legendFormat": "Rata-rata",
           "refId": "A"
-        },
-        {
-          "expr": "max by (instance, server_id, application, lokasi) ((100 * (1 - node_memory_MemAvailable_bytes{server_id=~\"$server\"} / node_memory_MemTotal_bytes{server_id=~\"$server\"})) or (100 * (1 - windows_memory_available_bytes{server_id=~\"$server\"} / windows_cs_physical_memory_bytes{server_id=~\"$server\"})))",
-          "format": "table",
-          "instant": true,
-          "refId": "B"
-        },
-        {
-          "expr": "max by (instance, server_id, application, lokasi) ((100 * (1 - avg by (instance, server_id, application, lokasi) (rate(node_cpu_seconds_total{mode=\"idle\", server_id=~\"$server\"}[5m])))) or (100 * (1 - avg by (instance, server_id, application, lokasi) (rate(windows_cpu_time_total{mode=\"idle\", server_id=~\"$server\"}[5m])))))",
-          "format": "table",
-          "instant": true,
-          "refId": "C"
-        },
-        {
-          "expr": "max by (instance, server_id, application, lokasi) ((100 - (100 * node_filesystem_avail_bytes{fstype!~\"tmpfs|overlay|squashfs|devtmpfs\", mountpoint=\"/\", server_id=~\"$server\"} / node_filesystem_size_bytes{fstype!~\"tmpfs|overlay|squashfs|devtmpfs\", mountpoint=\"/\", server_id=~\"$server\"})) or (100 - (100 * windows_logical_disk_free_bytes{volume=\"C:\", server_id=~\"$server\"} / windows_logical_disk_size_bytes{volume=\"C:\", server_id=~\"$server\"})))",
-          "format": "table",
-          "instant": true,
-          "refId": "D"
         }
       ],
-      "title": "Ringkasan kesehatan per server (hanya UP)",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "drawStyle": "line",
+            "lineInterpolation": "smooth",
+            "fillOpacity": 16,
+            "lineWidth": 2,
+            "showPoints": "never",
+            "spanNulls": true,
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "unit": "percent",
+          "min": 0,
+          "max": 100
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "11.2.2",
+      "id": 7
+    },
+    {
+      "type": "timeseries",
+      "title": "Memory Utilization",
+      "description": "",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 6
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "avg((100 * (1 - node_memory_MemAvailable_bytes{job=\"node\"} / node_memory_MemTotal_bytes{job=\"node\"})) or (100 * (1 - windows_memory_available_bytes{job=\"windows\"} / windows_cs_physical_memory_bytes{job=\"windows\"})))",
+          "legendFormat": "Rata-rata",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "drawStyle": "line",
+            "lineInterpolation": "smooth",
+            "fillOpacity": 16,
+            "lineWidth": 2,
+            "showPoints": "never",
+            "spanNulls": true,
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "unit": "percent",
+          "min": 0,
+          "max": 100
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "11.2.2",
+      "id": 8
+    },
+    {
+      "type": "row",
+      "title": "Kesehatan server",
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 13
+      },
+      "panels": [],
+      "id": 9
+    },
+    {
+      "type": "table",
+      "title": "Server Health Status",
+      "description": "UP=1 online. Warning: CPU ≥ 70, RAM ≥ 75, disk ≥ 75. Kritis: CPU > 85, RAM > 90, disk > 85.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 14
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "up{job=~\"node|windows\",server_id=~\"$server\"}",
+          "legendFormat": "",
+          "refId": "A",
+          "instant": true,
+          "format": "table"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "max by (instance, server_id, application, lokasi) ((100 * (1 - avg by (instance, server_id, application, lokasi) (rate(node_cpu_seconds_total{mode=\"idle\",server_id=~\"$server\"}[5m])))) or (100 * (1 - avg by (instance, server_id, application, lokasi) (rate(windows_cpu_time_total{mode=\"idle\",server_id=~\"$server\"}[5m])))))",
+          "legendFormat": "",
+          "refId": "C",
+          "instant": true,
+          "format": "table"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "max by (instance, server_id, application, lokasi) ((100 * (1 - node_memory_MemAvailable_bytes{server_id=~\"$server\"} / node_memory_MemTotal_bytes{server_id=~\"$server\"})) or (100 * (1 - windows_memory_available_bytes{server_id=~\"$server\"} / windows_cs_physical_memory_bytes{server_id=~\"$server\"})))",
+          "legendFormat": "",
+          "refId": "B",
+          "instant": true,
+          "format": "table"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "max by (instance, server_id, application, lokasi) ((100 - (100 * node_filesystem_avail_bytes{fstype!~\"tmpfs|overlay|squashfs|devtmpfs\",mountpoint!~\"/boot|/boot/efi\",server_id=~\"$server\"} / node_filesystem_size_bytes{fstype!~\"tmpfs|overlay|squashfs|devtmpfs\",mountpoint!~\"/boot|/boot/efi\",server_id=~\"$server\"})) or (100 - (100 * windows_logical_disk_free_bytes{volume=~\"[A-Z]:\",server_id=~\"$server\"} / windows_logical_disk_size_bytes{volume=~\"[A-Z]:\",server_id=~\"$server\"})))",
+          "legendFormat": "",
+          "refId": "D",
+          "instant": true,
+          "format": "table"
+        }
+      ],
       "transformations": [
         {
           "id": "merge",
@@ -746,1466 +556,91 @@
               "Time": true,
               "__name__": true,
               "job": true,
-              "host": true
-            },
-            "indexByName": {
-              "server_id": 0,
-              "application": 1,
-              "lokasi": 2,
-              "instance": 3,
-              "Value #A": 4,
-              "Value #C": 5,
-              "Value #B": 6,
-              "Value #D": 7
-            },
-            "renameByName": {
-              "server_id": "Server",
-              "application": "Aplikasi",
-              "lokasi": "Lokasi",
-              "instance": "Instance"
-            }
-          }
-        }
-      ],
-      "type": "table",
-      "description": "Hanya server yang merespons (UP). Server tanpa agent jangan didaftarkan di nodes.yml."
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "description": "Server yang ada di target scrape tetapi tidak merespons (up==0). Jika agent belum dipasang, keluarkan dari nodes.yml dengan bash scripts/cleanup-false-down.sh --apply",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "red",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 0
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/^(server_id|Server)$/"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 280
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/^(application|Aplikasi)$/"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 160
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/^(lokasi|Lokasi)$/"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 100
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/^(instance|Instance)$/"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 160
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Value"
-            },
-            "properties": [
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "mode": "basic",
-                  "type": "color-background"
-                }
-              },
-              {
-                "id": "custom.width",
-                "value": 100
-              },
-              {
-                "id": "custom.align",
-                "value": "center"
-              },
-              {
-                "id": "displayName",
-                "value": "Status"
-              },
-              {
-                "id": "mappings",
-                "value": [
-                  {
-                    "options": {
-                      "0": {
-                        "color": "red",
-                        "index": 0,
-                        "text": "DOWN"
-                      }
-                    },
-                    "type": "value"
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 12,
-        "x": 12,
-        "y": 5
-      },
-      "id": 20,
-      "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "show": false
-        },
-        "showHeader": true,
-        "sortBy": [
-          {
-            "desc": false,
-            "displayName": "Server"
-          }
-        ]
-      },
-      "pluginVersion": "11.2.2",
-      "targets": [
-        {
-          "expr": "up{job=~\"node|windows\", server_id=~\"$server\"} == 0",
-          "format": "table",
-          "instant": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Daftar server DOWN",
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Time": true,
-              "__name__": true,
-              "job": true,
-              "host": true
-            },
-            "indexByName": {
-              "server_id": 0,
-              "application": 1,
-              "lokasi": 2,
-              "instance": 3,
-              "Value": 4
-            },
-            "renameByName": {
-              "server_id": "Server",
-              "application": "Aplikasi",
-              "lokasi": "Lokasi",
-              "instance": "Instance",
-              "Value": "Status"
-            }
-          }
-        }
-      ],
-      "type": "table"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "description": "Semua service yang dipantau. Hijau=UP, merah=DOWN. Alert ServiceTidakAktif muncul saat DOWN dan hilang saat UP kembali.",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "filterable": true,
-            "inspect": false
-          },
-          "mappings": []
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/^(server_id|Server)$/"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 300
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/^(name|Unit)$/"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 220
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/^(Value|Status|lrt_service_up)$/"
-            },
-            "properties": [
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "mode": "basic",
-                  "type": "color-background"
-                }
-              },
-              {
-                "id": "custom.width",
-                "value": 100
-              },
-              {
-                "id": "custom.align",
-                "value": "center"
-              },
-              {
-                "id": "displayName",
-                "value": "Status"
-              },
-              {
-                "id": "mappings",
-                "value": [
-                  {
-                    "options": {
-                      "0": {
-                        "color": "red",
-                        "index": 0,
-                        "text": "DOWN"
-                      },
-                      "1": {
-                        "color": "green",
-                        "index": 1,
-                        "text": "UP"
-                      }
-                    },
-                    "type": "value"
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 16,
-        "x": 0,
-        "y": 14
-      },
-      "id": 18,
-      "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "show": false
-        },
-        "showHeader": true,
-        "sortBy": [
-          {
-            "desc": false,
-            "displayName": "Status"
-          }
-        ]
-      },
-      "pluginVersion": "11.2.2",
-      "targets": [
-        {
-          "expr": "max by (server_id, name, application, lokasi, instance) (lrt_service_up{server_id=~\"$server\"})",
-          "format": "table",
-          "instant": true,
-          "legendFormat": "__auto",
-          "refId": "A"
-        }
-      ],
-      "title": "Status service pantauan (UP/DOWN)",
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Time": true,
-              "__name__": true,
-              "job": true,
-              "host": true
-            },
-            "indexByName": {
-              "server_id": 0,
-              "name": 1,
-              "application": 2,
-              "lokasi": 3,
-              "instance": 4,
-              "Value": 5
-            },
-            "renameByName": {
-              "server_id": "Server",
-              "name": "Unit",
-              "application": "Aplikasi",
-              "lokasi": "Lokasi",
-              "instance": "Instance",
-              "Value": "Status"
-            }
-          }
-        }
-      ],
-      "type": "table"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "description": "Hanya service yang sedang DOWN. Baris hilang otomatis saat service UP lagi.",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "filterable": true,
-            "inspect": false
-          },
-          "mappings": []
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/^(server_id|Server)$/"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 280
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/^(name|Unit)$/"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 180
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/^(Value|Status)$/"
-            },
-            "properties": [
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "mode": "basic",
-                  "type": "color-background"
-                }
-              },
-              {
-                "id": "custom.width",
-                "value": 100
-              },
-              {
-                "id": "custom.align",
-                "value": "center"
-              },
-              {
-                "id": "displayName",
-                "value": "Status"
-              },
-              {
-                "id": "mappings",
-                "value": [
-                  {
-                    "options": {
-                      "1": {
-                        "color": "orange",
-                        "index": 0,
-                        "text": "FAILED"
-                      }
-                    },
-                    "type": "value"
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 8,
-        "x": 16,
-        "y": 14
-      },
-      "id": 19,
-      "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "show": false
-        },
-        "showHeader": true,
-        "sortBy": [
-          {
-            "desc": false,
-            "displayName": "Server"
-          }
-        ]
-      },
-      "pluginVersion": "11.2.2",
-      "targets": [
-        {
-          "expr": "max by (server_id, name, application, lokasi, instance) (lrt_service_expected{server_id=~\"$server\"} == 1 and on(server_id, name, instance) lrt_service_up{server_id=~\"$server\"} == 0)",
-          "format": "table",
-          "instant": true,
-          "legendFormat": "__auto",
-          "refId": "A"
-        }
-      ],
-      "title": "Service DOWN saja",
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Time": true,
-              "__name__": true,
-              "job": true,
-              "state": true,
               "host": true,
-              "instance": true,
-              "type": true
-            },
-            "indexByName": {
-              "server_id": 0,
-              "name": 1,
-              "Value": 2
-            },
-            "renameByName": {
-              "server_id": "Server",
-              "name": "Unit",
-              "Value": "Status"
-            }
-          }
-        }
-      ],
-      "type": "table"
-    },
-    {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 22
-      },
-      "id": 101,
-      "title": "RAM",
-      "type": "row"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "drawStyle": "line",
-            "fillOpacity": 18,
-            "lineWidth": 2,
-            "pointSize": 5,
-            "showPoints": "never",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            }
-          },
-          "max": 100,
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "yellow",
-                "value": 80
-              },
-              {
-                "color": "red",
-                "value": 90
-              }
-            ]
-          },
-          "unit": "percent"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 16,
-        "x": 0,
-        "y": 23
-      },
-      "id": 8,
-      "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull",
-            "max"
-          ],
-          "displayMode": "table",
-          "placement": "right",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "desc"
-        }
-      },
-      "targets": [
-        {
-          "expr": "(100 * (1 - node_memory_MemAvailable_bytes{server_id=~\"$server\"} / node_memory_MemTotal_bytes{server_id=~\"$server\"})) or (100 * (1 - windows_memory_available_bytes{server_id=~\"$server\"} / windows_cs_physical_memory_bytes{server_id=~\"$server\"}))",
-          "legendFormat": "{{server_id}}",
-          "refId": "A"
-        }
-      ],
-      "title": "Penggunaan RAM (%)",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "drawStyle": "line",
-            "fillOpacity": 20,
-            "lineWidth": 2,
-            "showPoints": "never",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "normal"
-            }
-          },
-          "unit": "bytes"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 8,
-        "x": 16,
-        "y": 23
-      },
-      "id": 9,
-      "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "desc"
-        }
-      },
-      "targets": [
-        {
-          "expr": "(node_memory_MemTotal_bytes{server_id=~\"$server\"} - node_memory_MemAvailable_bytes{server_id=~\"$server\"}) or (windows_cs_physical_memory_bytes{server_id=~\"$server\"} - windows_memory_available_bytes{server_id=~\"$server\"})",
-          "legendFormat": "{{server_id}} terpakai",
-          "refId": "A"
-        },
-        {
-          "expr": "node_memory_MemAvailable_bytes{server_id=~\"$server\"} or windows_memory_available_bytes{server_id=~\"$server\"}",
-          "legendFormat": "{{server_id}} tersedia",
-          "refId": "B"
-        }
-      ],
-      "title": "RAM terpakai vs tersedia",
-      "type": "timeseries"
-    },
-    {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 31
-      },
-      "id": 102,
-      "title": "Storage",
-      "type": "row"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "drawStyle": "line",
-            "fillOpacity": 15,
-            "lineWidth": 2,
-            "showPoints": "never",
-            "spanNulls": true
-          },
-          "max": 100,
-          "min": 0,
-          "unit": "percent"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 14,
-        "x": 0,
-        "y": 32
-      },
-      "id": 10,
-      "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "displayMode": "table",
-          "placement": "right",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "desc"
-        }
-      },
-      "targets": [
-        {
-          "expr": "(100 - (100 * node_filesystem_avail_bytes{fstype!~\"tmpfs|overlay|squashfs|devtmpfs\", server_id=~\"$server\"} / node_filesystem_size_bytes{fstype!~\"tmpfs|overlay|squashfs|devtmpfs\", server_id=~\"$server\"})) or (100 - (100 * windows_logical_disk_free_bytes{volume=~\"[A-Z]:\", server_id=~\"$server\"} / windows_logical_disk_size_bytes{volume=~\"[A-Z]:\", server_id=~\"$server\"}))",
-          "legendFormat": "{{server_id}} {{mountpoint}}{{volume}}",
-          "refId": "A"
-        }
-      ],
-      "title": "Penggunaan storage per mount",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "inspect": false
-          },
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "yellow",
-                "value": 80
-              },
-              {
-                "color": "red",
-                "value": 90
-              }
-            ]
-          },
-          "unit": "percent",
-          "max": 100,
-          "min": 0
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Value"
-            },
-            "properties": [
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "mode": "gradient",
-                  "type": "gauge"
-                }
-              },
-              {
-                "id": "displayName",
-                "value": "Terpakai"
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 10,
-        "x": 14,
-        "y": 32
-      },
-      "id": 11,
-      "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "show": false
-        },
-        "showHeader": true
-      },
-      "pluginVersion": "11.2.2",
-      "targets": [
-        {
-          "expr": "(100 - (100 * node_filesystem_avail_bytes{fstype!~\"tmpfs|overlay|squashfs|devtmpfs\", server_id=~\"$server\"} / node_filesystem_size_bytes{fstype!~\"tmpfs|overlay|squashfs|devtmpfs\", server_id=~\"$server\"})) or (100 - (100 * windows_logical_disk_free_bytes{volume=~\"[A-Z]:\", server_id=~\"$server\"} / windows_logical_disk_size_bytes{volume=~\"[A-Z]:\", server_id=~\"$server\"}))",
-          "format": "table",
-          "instant": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Tabel storage",
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Time": true,
-              "__name__": true,
-              "job": true,
-              "device": true,
-              "fstype": true,
-              "host": true
-            },
-            "renameByName": {
-              "server_id": "Server",
-              "mountpoint": "Mount",
-              "volume": "Drive",
-              "instance": "Instance"
-            }
-          }
-        }
-      ],
-      "type": "table"
-    },
-    {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 40
-      },
-      "id": 103,
-      "title": "Service",
-      "type": "row"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "inspect": false
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/^(server_id|Server)$/"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 240
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/^(Value|Status)$/"
-            },
-            "properties": [
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "mode": "basic",
-                  "type": "color-background"
-                }
-              },
-              {
-                "id": "custom.width",
-                "value": 110
-              },
-              {
-                "id": "custom.align",
-                "value": "center"
-              },
-              {
-                "id": "displayName",
-                "value": "Status"
-              },
-              {
-                "id": "mappings",
-                "value": [
-                  {
-                    "options": {
-                      "0": {
-                        "color": "red",
-                        "index": 0,
-                        "text": "DOWN"
-                      },
-                      "1": {
-                        "color": "green",
-                        "index": 1,
-                        "text": "UP"
-                      }
-                    },
-                    "type": "value"
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 41
-      },
-      "id": 12,
-      "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "show": false
-        },
-        "showHeader": true
-      },
-      "pluginVersion": "11.2.2",
-      "targets": [
-        {
-          "expr": "probe_success{server_id=~\"$server\"}",
-          "format": "table",
-          "instant": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Health check service (HTTP/TCP)",
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Time": true,
-              "__name__": true,
-              "job": true
-            },
-            "renameByName": {
-              "server_id": "Server",
-              "application": "Aplikasi",
-              "service": "Service",
-              "instance": "Target",
-              "Value": "Status"
-            }
-          }
-        }
-      ],
-      "type": "table"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "inspect": false
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/^(server_id|Server)$/"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 220
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/^(name|Unit)$/"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 220
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/^(Value|Status)$/"
-            },
-            "properties": [
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "mode": "basic",
-                  "type": "color-background"
-                }
-              },
-              {
-                "id": "custom.width",
-                "value": 110
-              },
-              {
-                "id": "custom.align",
-                "value": "center"
-              },
-              {
-                "id": "displayName",
-                "value": "Status"
-              },
-              {
-                "id": "mappings",
-                "value": [
-                  {
-                    "options": {
-                      "1": {
-                        "color": "red",
-                        "index": 0,
-                        "text": "FAILED"
-                      }
-                    },
-                    "type": "value"
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 41
-      },
-      "id": 13,
-      "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "show": false
-        },
-        "showHeader": true
-      },
-      "pluginVersion": "11.2.2",
-      "targets": [
-        {
-          "expr": "max by (server_id, name, application, lokasi, instance) (lrt_service_expected{server_id=~\"$server\"} == 1 and on(server_id, name, instance) lrt_service_up{server_id=~\"$server\"} == 0)",
-          "format": "table",
-          "instant": true,
-          "refId": "A",
-          "legendFormat": "__auto"
-        }
-      ],
-      "title": "Service DOWN (systemd detail)",
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Time": true,
-              "__name__": true,
-              "job": true,
-              "state": true,
-              "host": true
-            },
-            "renameByName": {
-              "server_id": "Server",
-              "name": "Unit",
-              "instance": "Instance",
-              "Value": "Status"
-            }
-          }
-        }
-      ],
-      "type": "table",
-      "description": "Service expected (dari agent) yang sudah tidak aktif. Daftar expected sticky, diisi otomatis setiap 5 menit."
-    },
-    {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 49
-      },
-      "id": 104,
-      "title": "Proses abnormal & notifikasi",
-      "type": "row"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "lineWidth": 2,
-            "showPoints": "never",
-            "spanNulls": true
-          },
-          "unit": "percent"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 50
-      },
-      "id": 14,
-      "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "displayMode": "table",
-          "placement": "right",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "desc"
-        }
-      },
-      "targets": [
-        {
-          "expr": "topk(10, sum by (server_id, groupname) (rate(namedprocess_namegroup_cpu_seconds_total{server_id=~\"$server\"}[5m])) * 100)",
-          "legendFormat": "{{server_id}} {{groupname}}",
-          "refId": "A"
-        }
-      ],
-      "title": "Top 10 proses CPU abnormal",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "lineWidth": 2,
-            "showPoints": "never",
-            "spanNulls": true
-          },
-          "unit": "bytes"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 50
-      },
-      "id": 15,
-      "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "displayMode": "table",
-          "placement": "right",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "desc"
-        }
-      },
-      "targets": [
-        {
-          "expr": "topk(10, namedprocess_namegroup_memory_bytes{memtype=\"resident\", server_id=~\"$server\"})",
-          "legendFormat": "{{server_id}} {{groupname}}",
-          "refId": "A"
-        }
-      ],
-      "title": "Top 10 proses RAM",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "inspect": false
-          },
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "orange",
-                "value": 50
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Value"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "percent"
-              },
-              {
-                "id": "displayName",
-                "value": "CPU %"
-              },
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "mode": "gradient",
-                  "type": "gauge"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 58
-      },
-      "id": 16,
-      "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "show": false
-        },
-        "showHeader": true,
-        "sortBy": [
-          {
-            "desc": true,
-            "displayName": "CPU %"
-          }
-        ]
-      },
-      "pluginVersion": "11.2.2",
-      "targets": [
-        {
-          "expr": "sum by (server_id, groupname) (rate(namedprocess_namegroup_cpu_seconds_total{server_id=~\"$server\"}[5m])) * 100 > 20",
-          "format": "table",
-          "instant": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Proses dengan CPU > 20% (indikasi abnormal)",
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Time": true
-            },
-            "renameByName": {
-              "server_id": "Server",
-              "groupname": "Proses"
-            }
-          }
-        }
-      ],
-      "type": "table"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "inspect": false
-          },
-          "mappings": [
-            {
-              "options": {
-                "firing": {
-                  "color": "red",
-                  "index": 0,
-                  "text": "FIRING"
-                },
-                "pending": {
-                  "color": "orange",
-                  "index": 1,
-                  "text": "PENDING"
-                }
-              },
-              "type": "value"
-            }
-          ]
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "alertstate"
-            },
-            "properties": [
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "mode": "basic",
-                  "type": "color-background"
-                }
-              },
-              {
-                "id": "custom.width",
-                "value": 120
-              },
-              {
-                "id": "custom.align",
-                "value": "center"
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 58
-      },
-      "id": 17,
-      "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "show": false
-        },
-        "showHeader": true,
-        "sortBy": [
-          {
-            "desc": false,
-            "displayName": "Alert"
-          }
-        ]
-      },
-      "pluginVersion": "11.2.2",
-      "targets": [
-        {
-          "expr": "ALERTS{alertstate=~\"firing|pending\", server_id=~\"$server\", alertname=~\"ServerDown|ServiceDown|ServiceTidakAktif|RamKritis|StorageKritis|CpuTinggi|ProsesCpuAbnormal|ProsesZombie\"}",
-          "format": "table",
-          "instant": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Notifikasi abnormal (alert aktif)",
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Time": true,
-              "__name__": true,
-              "Value": true,
-              "job": true,
-              "prometheus": true,
               "monitor": true,
               "datacenter": true
             },
+            "indexByName": {
+              "Server": 0,
+              "Aplikasi": 1,
+              "Lokasi": 2,
+              "Instance": 3,
+              "UP": 4,
+              "CPU %": 5,
+              "RAM %": 6,
+              "Disk %": 7
+            },
             "renameByName": {
-              "alertname": "Alert",
-              "alertstate": "Status",
-              "severity": "Severity",
               "server_id": "Server",
-              "groupname": "Proses",
-              "instance": "Instance"
+              "application": "Aplikasi",
+              "lokasi": "Lokasi",
+              "instance": "Instance",
+              "Value #A": "UP",
+              "Value #C": "CPU %",
+              "Value #B": "RAM %",
+              "Value #D": "Disk %"
             }
           }
         }
       ],
-      "type": "table",
-      "description": "Alert FIRING saat masalah terjadi. Saat pulih, status menjadi RESOLVED dan baris hilang dari tabel ini. ServiceTidakAktif: mati→alert, UP lagi→hilang."
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "text",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "11.2.2",
+      "id": 10
     }
   ],
   "refresh": "30s",
   "schemaVersion": 39,
   "tags": [
     "lrt",
-    "server",
-    "health",
-    "storage",
-    "ram",
-    "process"
+    "overview"
   ],
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timezone": "Asia/Jakarta",
+  "title": "Data Center Overview",
+  "uid": "lrt-server-health",
+  "weekStart": "monday",
   "templating": {
     "list": [
       {
-        "current": {
-          "selected": true,
-          "text": "All",
-          "value": "$__all"
-        },
         "datasource": {
           "type": "prometheus",
           "uid": "prometheus"
         },
         "definition": "label_values(up{job=~\"node|windows\"}, server_id)",
         "hide": 0,
-        "allValue": ".*",
         "includeAll": true,
         "label": "Server",
         "multi": true,
@@ -2220,56 +655,14 @@
         "regex": "",
         "skipUrlSync": false,
         "sort": 1,
-        "type": "query"
-      },
-      {
+        "type": "query",
+        "allValue": ".*",
         "current": {
           "selected": true,
-          "text": "__none__",
-          "value": "__none__"
-        },
-        "description": "Regex unit systemd yang dipantau. Default __none__ = belum dikonfigurasi. Contoh: nginx.service|postgresql.service",
-        "hide": 0,
-        "includeAll": false,
-        "label": "Service pantauan",
-        "multi": false,
-        "name": "service_unit",
-        "options": [
-          {
-            "selected": true,
-            "text": "__none__",
-            "value": "__none__"
-          },
-          {
-            "selected": false,
-            "text": "nginx.service",
-            "value": "nginx.service"
-          },
-          {
-            "selected": false,
-            "text": "postgresql.service",
-            "value": "postgresql.service"
-          },
-          {
-            "selected": false,
-            "text": "sshd.service",
-            "value": "sshd.service"
-          }
-        ],
-        "query": "__none__,nginx.service,postgresql.service,sshd.service",
-        "skipUrlSync": false,
-        "type": "custom"
+          "text": "All",
+          "value": "$__all"
+        }
       }
     ]
-  },
-  "time": {
-    "from": "now-6h",
-    "to": "now"
-  },
-  "timepicker": {},
-  "timezone": "Asia/Jakarta",
-  "title": "Pantauan Server LRT Jabodebek",
-  "uid": "lrt-server-health",
-  "version": 2,
-  "weekStart": "monday"
+  }
 }

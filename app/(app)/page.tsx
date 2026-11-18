@@ -89,6 +89,9 @@ export default async function HomePage({
           </p>
         </div>
         <div className="hero-actions">
+          <Link className="btn btn-ghost" href="/monitoring">
+            Monitoring
+          </Link>
           <a
             className="btn btn-ghost"
             href={grafanaDashboardUrl()}

@@ -112,11 +112,24 @@ services:
     ports:
       - "9256:9256"
 
+  # Status page bergaya Uptime Kuma (UI asli). Data monitor dikelola di UI Kuma.
+  uptime-kuma:
+    image: louislam/uptime-kuma:1
+    container_name: lrt-uptime-kuma
+    restart: unless-stopped
+    ports:
+      - "${UPTIME_KUMA_PORT:-3002}:3001"
+    volumes:
+      - uptime-kuma-data:/app/data
+    environment:
+      - TZ=Asia/Jakarta
+
 volumes:
   prometheus-data:
   alertmanager-data:
   grafana-data:
   loki-data:
+  uptime-kuma-data:
 
 networks:
   default:

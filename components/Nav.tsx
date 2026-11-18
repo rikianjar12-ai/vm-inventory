@@ -80,6 +80,12 @@ export function Nav({
         <HomeIcon />
         <span>Home</span>
       </Link>
+      <Link
+        href="/monitoring"
+        className={pathname.startsWith("/monitoring") ? "active" : undefined}
+      >
+        Monitoring
+      </Link>
       <a
         href={grafanaUrl}
         target="_blank"

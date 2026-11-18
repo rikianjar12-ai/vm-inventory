@@ -24,9 +24,18 @@ services:
       DATABASE_URL: postgresql://postgres:postgres@inventory-db:5432/vm_inventory
       GRAFANA_URL: http://192.168.38.11:3001
       GRAFANA_DASHBOARD_UID: lrt-server-health
+      PROMETHEUS_URL: http://prometheus:9090
       APP_PUBLIC_HOST: 192.168.38.11
     depends_on:
       - inventory-db
+    networks:
+      - default
+      - monitoring
+
+networks:
+  monitoring:
+    external: true
+    name: lrt-monitoring_default
 
 volumes:
   inventory-pg:

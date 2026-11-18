@@ -1,6 +1,18 @@
-# Grafana — Pantauan Server LRT Jabodebek
+# Monitoring Data Center LRT Jabodebek
 
-Stack Grafana + Prometheus untuk memantau **kesehatan server**, **service**, **RAM**, **storage**, dan **proses abnormal**, plus alert.
+Satu tampilan untuk seluruh server, fisik maupun VM. Halaman utama ada di aplikasi inventory (`/monitoring`) dan di Grafana. Sumber datanya Prometheus.
+
+Ambang yang dipakai kartu Warning dan alert:
+
+| Parameter | Normal | Warning | Critical |
+| --- | --- | --- | --- |
+| CPU | di bawah 70% | 70–85% | di atas 85% |
+| RAM | di bawah 75% | 75–90% | di atas 90% |
+| Disk | di bawah 75% | 75–85% | di atas 85% |
+| Server | Online | — | Offline |
+| Service | berjalan | — | mati |
+
+Alert CPU, RAM, dan disk baru menyala setelah kondisi bertahan **10 menit**.
 
 ## 1. Jalankan dashboard
 
@@ -18,12 +30,28 @@ docker compose up -d
 
 | Layanan | URL | Jangkauan |
 | --- | --- | --- |
+| Overview (inventory) | http://192.168.38.11:3000/monitoring | layar ruang Data Center |
 | Grafana | http://192.168.38.11:3001 | jaringan server, user `admin`, password dari `.env` |
 | Loki | port 3100 | VM yang mengirim log |
 | Prometheus | http://127.0.0.1:9091 | hanya di server pantauan |
 | Alertmanager | http://127.0.0.1:9093 | hanya di server pantauan |
 
-Dashboard otomatis: **Pantauan Server LRT Jabodebek**.
+Dashboard Grafana, berurutan dari ringkasan ke detail:
+
+1. **Data Center Overview** — total server, online, offline, warning, grafik CPU/RAM, tabel kesehatan
+2. **Server Detail** — CPU per core, RAM, swap, disk per mount, I/O, trafik, uptime
+3. **Aplikasi & Database** — service systemd, probe HTTP/TCP, PostgreSQL setelah exporter dipasang
+4. **Jaringan & Infrastruktur** — bandwidth, drop, error interface. SNMP hardware menyusul
+5. **Alert & Insiden** — alert aktif dan proses abnormal
+6. **Log server** — syslog dan log service
+
+Setelah mengubah `alerts.yml`, muat ulang Prometheus:
+
+```powershell
+docker compose restart prometheus
+```
+
+Overview di aplikasi inventory membaca Prometheus lewat `PROMETHEUS_URL`. Di server pantauan, container inventory ikut jaringan `lrt-monitoring_default` dan memakai `http://prometheus:9090`. Jalankan stack monitoring ini dulu, baru inventory.
 
 ## 2. Pasang agen di setiap VM
 
@@ -103,7 +131,7 @@ sudo /usr/local/bin/export-active-services.sh
 
 Alert yang sudah aktif:
 
-- Server down, CPU/RAM/disk tinggi
+- Server down, CPU/RAM/disk di atas ambang warning atau kritis
 - Service systemd failed / probe HTTP-TCP gagal
 - Proses CPU > 80%, RAM proses > 35%, zombie, terlalu banyak proses, D-state
 
@@ -115,6 +143,6 @@ docker compose restart alertmanager
 
 ## 5. Inventory app
 
-Set `GRAFANA_URL=http://localhost:3001` di `.env.local` aplikasi Next.js. Menu **Monitoring** membuka dashboard di dalam inventory.
+Menu **Monitoring** membuka Data Center Overview. Set `GRAFANA_URL` dan `PROMETHEUS_URL` di lingkungan aplikasi. `docker-compose.inventory.yml` sudah mengarah ke Grafana `http://192.168.38.11:3001` dan Prometheus `http://prometheus:9090`.
 
 Agent host (hanya Linux yang menjalankan Docker): `docker compose --profile local-agent up -d`.

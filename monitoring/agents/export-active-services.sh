@@ -14,9 +14,10 @@ TEXTDIR="${TEXTFILE_DIR:-/var/lib/node_exporter/textfile}"
 STATE_DIR="${STATE_DIR:-/var/lib/lrt-monitoring}"
 STATE_FILE="${STATE_DIR}/expected-services.list"
 TMP_ACTIVE="$(mktemp)"
+TMP_KEPT="$(mktemp)"
 TMP_MERGED="$(mktemp)"
 TMP_PROM="$(mktemp)"
-trap 'rm -f "$TMP_ACTIVE" "$TMP_MERGED" "$TMP_PROM"' EXIT
+trap 'rm -f "$TMP_ACTIVE" "$TMP_KEPT" "$TMP_MERGED" "$TMP_PROM"' EXIT
 
 mkdir -p "$TEXTDIR" "$STATE_DIR"
 
@@ -39,6 +40,7 @@ is_watchable() {
     node_exporter.service|process_exporter.service|promtail.service|lrt-export-services.service) return 1 ;;
     # agen keamanan / inventory host — bukan service aplikasi bisnis
     cbagentd.service|cbdaemon.service|falcon-sensor.service) return 1 ;;
+    sentinelone*.service) return 1 ;;
     wazuh-agent.service|zabbix-agent*.service|telegraf.service) return 1 ;;
   esac
   stype="$(systemctl show -p Type --value "$unit" 2>/dev/null || true)"
@@ -63,7 +65,14 @@ while IFS= read -r unit; do
 done < <(systemctl list-units --type=service --state=running --no-legend --no-pager 2>/dev/null | awk '{print $1}')
 
 touch "$STATE_FILE"
-cat "$STATE_FILE" "$TMP_ACTIVE" | sed '/^$/d' | sort -u > "$TMP_MERGED"
+# Buang unit yang sudah tidak dipantau (agen keamanan, noise OS) dari daftar sticky.
+: > "$TMP_KEPT"
+while IFS= read -r unit; do
+  [[ -z "$unit" ]] && continue
+  is_watchable "$unit" || continue
+  printf '%s\n' "$unit" >> "$TMP_KEPT"
+done < "$STATE_FILE"
+cat "$TMP_KEPT" "$TMP_ACTIVE" | sed '/^$/d' | sort -u > "$TMP_MERGED"
 cp "$TMP_MERGED" "$STATE_FILE"
 
 {

@@ -12,10 +12,10 @@
       "includeVars": true,
       "keepTime": true,
       "targetBlank": false,
-      "title": "Pantauan server",
-      "tooltip": "Kesehatan, RAM, storage, dan proses",
+      "title": "Data Center Overview",
+      "tooltip": "Ringkasan kesehatan server",
       "type": "link",
-      "url": "/d/lrt-server-health/pantauan-server-lrt-jabodebek"
+      "url": "/d/lrt-server-health/data-center-overview"
     }
   ],
   "liveNow": true,
